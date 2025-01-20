@@ -21,7 +21,7 @@ export function createReceiptTemplate(payment: Payment): ReceiptTemplate {
   return {
     schoolName: "DAROUL MOKHTAR FRANCO ARABE",
     schoolAddress: "Quartier Sante Yalla, Pout, THIES",
-    schoolPhone: "Tel : 77 282 00 36 / 77 155 35 68",
+    schoolPhone: "Tel : 77 282 00 36 || Email : daroulmokhtar1@gmail.com",
     receiptNumber: generateReceiptNumber(),
     date: formatReceiptDate(payment.payment_date),
     studentName: `${payment.student?.first_name} ${payment.student?.last_name}`,
