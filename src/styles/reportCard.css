@@ -1,0 +1,28 @@
+.report-card {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 15mm;
+  margin: 0 auto;
+  background: white;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
+
+@media print {
+  .report-card {
+    box-shadow: none;
+    margin: 0;
+    padding: 15mm;
+  }
+
+  .report-card table,
+  .report-card th,
+  .report-card td {
+    border-color: black !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .no-break {
+    page-break-inside: avoid;
+  }
+}

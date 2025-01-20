@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom scrollbar styles */
+@layer utilities {
+  .scrollbar-custom {
+    @apply overflow-x-auto;
+    scrollbar-width: thin;
+    scrollbar-color: #CBD5E1 #F1F5F9;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar {
+    @apply h-2 w-2;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-track {
+    @apply bg-slate-100 rounded-full;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    @apply bg-slate-300 rounded-full hover:bg-slate-400;
+  }
+}
+
+/* Print styles for report card */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 1cm;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    width: 210mm;
+    height: 297mm;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .report-card {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 15mm;
+    margin: 0;
+    background: white;
+    box-shadow: none;
+    page-break-after: always;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+
+  .print\:p-4 {
+    padding: 1rem !important;
+  }
+
+  .print\:mt-16 {
+    margin-top: 4rem !important;
+  }
+
+  /* Ensure table borders print correctly */
+  table, th, td {
+    border-color: black !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Prevent page breaks inside critical elements */
+  .no-break {
+    page-break-inside: avoid;
+  }
+}
+
+/* Table wrapper styles */
+.table-wrapper {
+  @apply w-full overflow-hidden rounded-lg shadow-md;
+}
+
+.table-scroll {
+  @apply w-full scrollbar-custom;
+}
+
+.table-container {
+  @apply min-w-max lg:min-w-full;
+}
+
+/* Prevent browser extension conflicts */
+:root {
+  isolation: isolate;
+}
+
+/* Ensure proper stacking context */
+#root {
+  isolation: isolate;
+  position: relative;
+  z-index: 0;
+}
