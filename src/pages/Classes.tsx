@@ -8,6 +8,7 @@ import { useModal } from '../hooks/useModal';
 import { CLASS_TYPES } from '../constants/classTypes';
 import { CLASS_LEVELS } from '../constants/classLevels';
 import { useClasses } from '../hooks/useClasses';
+import { useSchoolYear } from '../contexts/SchoolYearContext';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 
 export function Classes() {
@@ -25,10 +26,12 @@ export function Classes() {
   const formModal = useModal();
   const deleteModal = useModal();
   const errorModal = useModal();
+  const { selectedYear } = useSchoolYear();
+  const yearId = selectedYear?.id;
 
   useEffect(() => {
-    loadClasses();
-  }, [loadClasses]);
+    loadClasses(yearId);
+  }, [loadClasses, yearId]);
 
   const handleEdit = (classItem: Class) => {
     setSelectedClass(classItem);
@@ -44,14 +47,14 @@ export function Classes() {
       setSelectedClass(null);
       errorModal.openModal();
     } else {
-      await loadClasses();
+      await loadClasses(yearId);
       deleteModal.closeModal();
       setSelectedClass(null);
     }
   };
 
   const handleFormSuccess = async () => {
-    await loadClasses();
+    await loadClasses(yearId);
     formModal.closeModal();
     setSelectedClass(null);
   };

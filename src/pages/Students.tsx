@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { UserPlus } from 'lucide-react';
+import { UserPlus, RefreshCw } from 'lucide-react';
 import { StudentForm } from '../components/forms/StudentForm';
+import { ReenrollForm } from '../components/forms/ReenrollForm';
 import { Modal } from '../components/modals/Modal';
 import { ConfirmDialog } from '../components/dialogs/ConfirmDialog';
 import { useModal } from '../hooks/useModal';
 import { fetchStudents, deleteStudent } from '../services/studentService';
 import { useAuth } from '../contexts/AuthContext';
+import { useSchoolYear } from '../contexts/SchoolYearContext';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import { useNavigate } from 'react-router-dom';
 import { CLASS_LEVELS } from '../constants/classLevels';
@@ -27,7 +29,10 @@ export function Students() {
   const [selectedLevels, setSelectedLevels] = useState<{ french?: string; arabic?: string }>({});
   const formModal = useModal();
   const deleteModal = useModal();
+  const reenrollModal = useModal();
   const { user } = useAuth();
+  const { selectedYear, isCurrentYear } = useSchoolYear();
+  const yearId = selectedYear?.id;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,12 +41,13 @@ export function Students() {
       return;
     }
     loadStudents();
-  }, [user, navigate]);
+  }, [user, navigate, yearId]);
 
   async function loadStudents() {
+    if (!yearId) return;
     try {
       setLoading(true);
-      const data = await fetchStudents();
+      const data = await fetchStudents(yearId);
       setStudents(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error loading students:', error);
@@ -97,17 +103,30 @@ export function Students() {
   return (
     <div>
       <div className="page-header">
-        <h1 className="page-title">Gestion des Élèves</h1>
-        <button
-          onClick={() => {
-            setSelectedStudent(null);
-            formModal.openModal();
-          }}
-          className="btn-primary"
-        >
-          <UserPlus className="h-5 w-5" />
-          Nouvel Élève
-        </button>
+        <div>
+          <h1 className="page-title">Gestion des Élèves</h1>
+          <p className="mt-1 text-sm text-slate-500">
+            {Object.keys(groupedStudents).length} élève(s) inscrit(s) en {selectedYear?.label}
+          </p>
+        </div>
+        {isCurrentYear && (
+          <div className="flex flex-wrap gap-2">
+            <button onClick={reenrollModal.openModal} className="btn-secondary">
+              <RefreshCw className="h-5 w-5" />
+              Réinscrire des élèves
+            </button>
+            <button
+              onClick={() => {
+                setSelectedStudent(null);
+                formModal.openModal();
+              }}
+              className="btn-primary"
+            >
+              <UserPlus className="h-5 w-5" />
+              Nouvel Élève
+            </button>
+          </div>
+        )}
       </div>
 
       <Table>
@@ -163,6 +182,14 @@ export function Students() {
               </tr>
             );
           })}
+          {Object.keys(groupedStudents).length === 0 && (
+            <tr>
+              <td colSpan={8} className="px-6 py-8 text-center text-slate-500">
+                Aucun élève inscrit en {selectedYear?.label}.
+                {isCurrentYear && ' Ajoutez un nouvel élève ou réinscrivez ceux de l\'année précédente.'}
+              </td>
+            </tr>
+          )}
         </tbody>
       </Table>
 
@@ -179,6 +206,24 @@ export function Students() {
           onSuccess={handleFormSuccess}
           onCancel={formModal.closeModal}
         />
+      </Modal>
+
+      <Modal
+        isOpen={reenrollModal.isOpen}
+        onClose={reenrollModal.closeModal}
+        title={`Réinscrire des élèves en ${selectedYear?.label}`}
+        size="xl"
+      >
+        {selectedYear && (
+          <ReenrollForm
+            targetYear={selectedYear}
+            onSuccess={async () => {
+              await loadStudents();
+              reenrollModal.closeModal();
+            }}
+            onCancel={reenrollModal.closeModal}
+          />
+        )}
       </Modal>
 
       <ConfirmDialog

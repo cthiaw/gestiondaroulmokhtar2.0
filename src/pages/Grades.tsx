@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useStudents } from '../hooks/useStudents';
+import { useSchoolYear } from '../contexts/SchoolYearContext';
 import { Modal } from '../components/modals/Modal';
 import { GradeForm } from '../components/grades/GradeForm';
 import { GradesList } from '../components/grades/GradesList';
@@ -12,6 +13,8 @@ import { Grade, ReportCardData } from '../types/grades';
 
 export function Grades() {
   const { students, loading } = useStudents();
+  const { selectedYear } = useSchoolYear();
+  const yearId = selectedYear?.id ?? '';
   const [selectedStudent, setSelectedStudent] = useState<any>(null);
   const [studentGrades, setStudentGrades] = useState<Grade[]>([]);
   const [selectedTrimester, setSelectedTrimester] = useState(1);
@@ -30,7 +33,7 @@ export function Grades() {
   };
 
   const loadStudentGrades = async (studentId: string, trimester: number) => {
-    const { data } = await fetchStudentGrades(studentId, trimester);
+    const { data } = await fetchStudentGrades(studentId, trimester, yearId);
     setStudentGrades(data);
   };
 
@@ -49,7 +52,7 @@ export function Grades() {
 
   const handleGenerateReportCard = async (student: any, trimester: number) => {
     try {
-      const data = await generateReportCard(student.id, trimester);
+      const data = await generateReportCard(student.id, trimester, yearId);
       setReportCardData(data);
       reportCardModal.openModal();
     } catch (error) {
@@ -122,7 +125,7 @@ export function Grades() {
 
   return (
     <div>
-      <h1 className="page-title mb-6">Gestion des Notes</h1>
+      <h1 className="page-title mb-6">Gestion des Notes · {selectedYear?.label}</h1>
 
       <div className="space-y-8">
         {renderStudentsTable(frenchStudents, "Classes Françaises")}

@@ -10,6 +10,7 @@ export async function createOrUpdateAbsences(data: CreateAbsenceDTO): Promise<bo
       .select('id')
       .eq('student_id', data.student_id)
       .eq('trimester', data.trimester)
+      .eq('school_year_id', data.school_year_id)
       .maybeSingle();
 
     if (existing) {

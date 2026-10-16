@@ -19,6 +19,7 @@ import { Payment, Expense } from '../types/finance';
 import { PaymentList } from '../components/finance/PaymentList';
 import { ExpenseList } from '../components/finance/ExpenseList';
 import { FinanceSummary } from '../components/finance/FinanceSummary';
+import { useSchoolYear } from '../contexts/SchoolYearContext';
 
 export function Finances() {
   const [payments, setPayments] = useState<Payment[]>([]);
@@ -31,25 +32,29 @@ export function Finances() {
   const expenseFormModal = useModal();
   const deletePaymentModal = useModal();
   const deleteExpenseModal = useModal();
+  const { selectedYear } = useSchoolYear();
+  const yearId = selectedYear?.id ?? '';
 
   useEffect(() => {
+    if (!yearId) return;
+    setLoading(true);
     Promise.all([loadPayments(), loadExpenses()]).then(() => setLoading(false));
-  }, []);
+  }, [yearId]);
 
   async function loadPayments() {
-    const { data } = await fetchPayments();
+    const { data } = await fetchPayments(yearId);
     setPayments(data);
   }
 
   async function loadExpenses() {
-    const { data } = await fetchExpenses();
+    const { data } = await fetchExpenses(yearId);
     setExpenses(data);
   }
 
   const handlePaymentSubmit = async (data: Omit<Payment, 'id'>) => {
     const { error } = selectedPayment
       ? await updatePayment(selectedPayment.id, data)
-      : await createPayment(data);
+      : await createPayment({ ...data, school_year_id: yearId });
     if (error) throw error;
     await loadPayments();
     paymentFormModal.closeModal();
@@ -59,7 +64,7 @@ export function Finances() {
   const handleExpenseSubmit = async (data: Omit<Expense, 'id'>) => {
     const { error } = selectedExpense
       ? await updateExpense(selectedExpense.id, data)
-      : await createExpense(data);
+      : await createExpense({ ...data, school_year_id: yearId });
     if (error) throw error;
     await loadExpenses();
     expenseFormModal.closeModal();
@@ -96,7 +101,7 @@ export function Finances() {
 
   return (
     <div>
-      <h1 className="page-title mb-6">Gestion Financière</h1>
+      <h1 className="page-title mb-6">Gestion Financière · {selectedYear?.label}</h1>
 
       <FinanceSummary payments={payments} expenses={expenses} />
 

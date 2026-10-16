@@ -52,8 +52,8 @@ export function ReportCard({ data, onClose }: ReportCardProps) {
           {/* Report Card Content */}
           <div id="report-card-content" className="p-[15mm] report-card">
             <ReportCardHeader 
-              trimester={data.trimester} 
-              year={new Date().getFullYear()} 
+              trimester={data.trimester}
+              year={data.school_year_label || String(new Date().getFullYear())}
             />
 
             <StudentInfo 

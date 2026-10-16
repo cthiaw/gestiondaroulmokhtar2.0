@@ -2,17 +2,11 @@ import { supabase } from '../lib/supabase';
 import { Student, StudentFormData } from '../types/student';
 import { handleError } from '../utils/errorHandling';
 import { createStudentRecords } from '../utils/studentUtils';
+import { fetchStudentsForYear } from './schoolYearService';
 
-export async function fetchStudents(): Promise<Student[]> {
+export async function fetchStudents(schoolYearId: string): Promise<Student[]> {
   try {
-    const { data, error } = await supabase
-      .from('students')
-      .select('*')
-      .is('archived_at', null)
-      .order('last_name');
-
-    if (error) throw error;
-    return data || [];
+    return await fetchStudentsForYear(schoolYearId);
   } catch (error) {
     handleError('Error fetching students:', error);
     return [];
@@ -35,7 +29,7 @@ export async function createStudent(formData: StudentFormData) {
   }
 }
 
-export async function updateStudent(id: string, formData: StudentFormData) {
+export async function updateStudent(id: string, formData: StudentFormData, schoolYearId: string) {
   try {
     const { data: currentStudent } = await supabase
       .from('students')
@@ -50,9 +44,10 @@ export async function updateStudent(id: string, formData: StudentFormData) {
     const baseMatricule = currentStudent.matricule.replace('-AR', '');
     const { french, arabic } = createStudentRecords(formData);
 
-    const { error } = await supabase.rpc('update_student', {
-      p_id: id,
+    // Levels are updated for this school year only; other years keep theirs
+    const { error } = await supabase.rpc('update_student_in_year', {
       p_base_matricule: baseMatricule,
+      p_school_year_id: schoolYearId,
       p_french_data: french,
       p_arabic_data: arabic
     });

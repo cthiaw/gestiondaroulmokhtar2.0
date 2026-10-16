@@ -11,6 +11,7 @@ import { SubjectForm } from '../components/forms/SubjectForm';
 import { useModal } from '../hooks/useModal';
 import { fetchDashboardStats } from '../services/dashboard';
 import { useSubjects } from '../hooks/useSubjects';
+import { useSchoolYear } from '../contexts/SchoolYearContext';
 
 export function Dashboard() {
   const [stats, setStats] = useState<DashboardStats>({
@@ -23,13 +24,16 @@ export function Dashboard() {
   const formModal = useModal();
   const deleteModal = useModal();
   const { subjects, selectedSubject, setSelectedSubject, loadSubjects, createSubject, updateSubject, deleteSubject } = useSubjects();
+  const { selectedYear, isCurrentYear } = useSchoolYear();
+  const yearId = selectedYear?.id;
 
   useEffect(() => {
     Promise.all([loadStats(), loadSubjects()]).then(() => setLoading(false));
-  }, []);
+  }, [yearId]);
 
   async function loadStats() {
-    const stats = await fetchDashboardStats();
+    if (!yearId) return;
+    const stats = await fetchDashboardStats(yearId, isCurrentYear);
     setStats(stats);
   }
 
@@ -58,7 +62,7 @@ export function Dashboard() {
     <div>
       <div className="mb-6">
         <h1 className="page-title">Tableau de bord</h1>
-        <p className="mt-1 text-sm text-slate-500">Vue d'ensemble de l'école</p>
+        <p className="mt-1 text-sm text-slate-500">Vue d'ensemble de l'école · Année scolaire {selectedYear?.label}</p>
       </div>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
@@ -81,7 +85,7 @@ export function Dashboard() {
           color="violet"
         />
         <StatCard
-          title="Revenus du mois"
+          title={isCurrentYear ? 'Revenus du mois' : "Revenus de l'année"}
           value={`${stats.monthlyIncome.toLocaleString()} FCFA`}
           icon={CreditCard}
           color="amber"

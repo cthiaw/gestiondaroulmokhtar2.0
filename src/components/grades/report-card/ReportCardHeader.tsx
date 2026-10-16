@@ -2,7 +2,7 @@ import React from 'react';
 
 interface ReportCardHeaderProps {
   trimester: number;
-  year: number;
+  year: string;
 }
 
 export function ReportCardHeader({ trimester, year }: ReportCardHeaderProps) {
@@ -12,7 +12,7 @@ export function ReportCardHeader({ trimester, year }: ReportCardHeaderProps) {
       <p>Quartier Sante Yalla, Pout, THIES</p>
       <p>Tel : 77 828 00 36 || Email : daroulmokhtar1@gmail.com</p>
       <h2 className="text-xl font-bold mt-4">Bulletin de Notes</h2>
-      <p className="text-gray-600">Trimestre {trimester} - {year}</p>
+      <p className="text-gray-600">Trimestre {trimester} - Année scolaire {year}</p>
     </div>
   );
 }

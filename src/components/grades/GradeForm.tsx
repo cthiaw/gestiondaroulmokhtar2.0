@@ -3,6 +3,7 @@ import { Subject } from '../../types/grades';
 import { fetchSubjects } from '../../services/subjectService';
 import { saveGrade } from '../../services/gradeService';
 import { AbsenceField } from './AbsenceField';
+import { useSchoolYear } from '../../contexts/SchoolYearContext';
 
 interface GradeFormProps {
   studentId: string;
@@ -27,6 +28,7 @@ export function GradeForm({ studentId, onSuccess, onCancel, classType }: GradeFo
     max_score: '20'
   });
   const [error, setError] = useState('');
+  const { selectedYear } = useSchoolYear();
 
   useEffect(() => {
     loadSubjects();
@@ -59,13 +61,19 @@ export function GradeForm({ studentId, onSuccess, onCancel, classType }: GradeFo
       return;
     }
 
+    if (!selectedYear) {
+      setError('Aucune année scolaire sélectionnée');
+      return;
+    }
+
     try {
       const { error: saveError } = await saveGrade({
         student_id: studentId,
         subject_id: formData.subject_id,
         trimester: formData.trimester,
         score,
-        max_score: maxScore
+        max_score: maxScore,
+        school_year_id: selectedYear.id
       });
       if (saveError) throw saveError;
       

@@ -11,6 +11,7 @@ export interface CreateAbsenceDTO {
   student_id: string;
   trimester: number;
   count: number;
+  school_year_id: string;
 }
 
 export interface UpdateAbsenceDTO extends CreateAbsenceDTO {

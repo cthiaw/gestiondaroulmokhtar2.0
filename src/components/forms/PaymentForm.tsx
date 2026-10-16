@@ -4,6 +4,7 @@ import { fetchStudents } from '../../services/student/queries';
 import { PAYMENT_TYPES } from '../../constants/financeTypes';
 import { PAYMENT_STATUS } from '../../constants/paymentStatus';
 import { Student } from '../../services/student/types';
+import { useSchoolYear } from '../../contexts/SchoolYearContext';
 
 interface PaymentFormProps {
   payment?: Payment;
@@ -21,13 +22,17 @@ export function PaymentForm({ payment, onSubmit, onCancel }: PaymentFormProps) {
   });
   const [students, setStudents] = useState<Student[]>([]);
   const [error, setError] = useState('');
+  const { selectedYear } = useSchoolYear();
+  const yearId = selectedYear?.id;
 
   useEffect(() => {
     loadStudents();
-  }, []);
+  }, [yearId]);
 
+  // Students enrolled in the selected school year
   async function loadStudents() {
-    const data = await fetchStudents();
+    if (!yearId) return;
+    const data = await fetchStudents(yearId);
     // Group students by base matricule to show each student only once
     const uniqueStudents = data.reduce((acc, student) => {
       const baseMatricule = student.matricule.replace('-AR', '');

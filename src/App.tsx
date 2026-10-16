@@ -8,6 +8,7 @@ import { Classes } from './pages/Classes';
 import { Finances } from './pages/Finances';
 import { Grades } from './pages/Grades';
 import { AuthProvider } from './contexts/AuthContext';
+import { SchoolYearProvider } from './contexts/SchoolYearContext';
 import { Login } from './pages/Login';
 import { AuthGuard } from './components/auth/AuthGuard';
 import { PublicRoute } from './components/auth/PublicRoute';
@@ -16,6 +17,7 @@ export function App() {
   return (
     <Router>
       <AuthProvider>
+        <SchoolYearProvider>
         <Routes>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           
@@ -94,6 +96,7 @@ export function App() {
             }
           />
         </Routes>
+        </SchoolYearProvider>
       </AuthProvider>
     </Router>
   );

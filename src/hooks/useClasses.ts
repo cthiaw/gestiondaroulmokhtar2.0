@@ -9,11 +9,12 @@ export function useClasses() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const loadClasses = useCallback(async () => {
+  const loadClasses = useCallback(async (schoolYearId?: string) => {
+    if (!schoolYearId) return;
     try {
       setLoading(true);
       setError(null);
-      const data = await fetchClasses();
+      const data = await fetchClasses(schoolYearId);
       setClasses(data);
     } catch (err) {
       console.error('Error loading classes:', err);

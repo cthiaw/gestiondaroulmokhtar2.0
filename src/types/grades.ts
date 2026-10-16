@@ -20,6 +20,7 @@ export interface ReportCardData {
     birth_date: string;
   };
   trimester: 1 | 2 | 3;
+  school_year_label?: string;
   grades: Array<{
     subject_name: string;
     score: number;
