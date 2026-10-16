@@ -7,19 +7,22 @@ interface ExpenseListProps {
   onAdd: () => void;
   onEdit: (expense: Expense) => void;
   onDelete: (expense: Expense) => void;
+  readOnly?: boolean;
 }
 
-export function ExpenseList({ expenses, onAdd, onEdit, onDelete }: ExpenseListProps) {
+export function ExpenseList({ expenses, onAdd, onEdit, onDelete, readOnly = false }: ExpenseListProps) {
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-slate-900">Dépenses</h2>
-        <button
-          onClick={onAdd}
-          className="btn-primary"
-        >
-          Nouvelle Dépense
-        </button>
+        {!readOnly && (
+          <button
+            onClick={onAdd}
+            className="btn-primary"
+          >
+            Nouvelle Dépense
+          </button>
+        )}
       </div>
       <div className="card overflow-hidden">
         <div className="overflow-x-auto">
@@ -52,21 +55,32 @@ export function ExpenseList({ expenses, onAdd, onEdit, onDelete }: ExpenseListPr
                       {new Date(expense.expense_date).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap space-x-2">
-                      <button
-                        onClick={() => onEdit(expense)}
-                        className="font-medium text-brand-700 hover:text-brand-900"
-                      >
-                        Modifier
-                      </button>
-                      <button
-                        onClick={() => onDelete(expense)}
-                        className="font-medium text-red-600 hover:text-red-800"
-                      >
-                        Supprimer
-                      </button>
+                      {readOnly ? (
+                        <span className="text-slate-400">-</span>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => onEdit(expense)}
+                            className="font-medium text-brand-700 hover:text-brand-900"
+                          >
+                            Modifier
+                          </button>
+                          <button
+                            onClick={() => onDelete(expense)}
+                            className="font-medium text-red-600 hover:text-red-800"
+                          >
+                            Supprimer
+                          </button>
+                        </>
+                      )}
                     </td>
                   </tr>
                 ))}
+                {expenses.length === 0 && (
+                  <tr>
+                    <td colSpan={6} className="px-6 py-6 text-center text-slate-500">Aucune dépense pour cette année scolaire</td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
