@@ -5,9 +5,10 @@ import { getGradeAppreciation } from '../../services/grade/appreciation';
 interface GradesListProps {
   grades: Grade[];
   onDelete: (grade: Grade) => void;
+  readOnly?: boolean;
 }
 
-export function GradesList({ grades, onDelete }: GradesListProps) {
+export function GradesList({ grades, onDelete, readOnly = false }: GradesListProps) {
   if (grades.length === 0) {
     return (
       <div className="text-center py-6 bg-gray-50 rounded-lg border-2 border-black">
@@ -25,7 +26,9 @@ export function GradesList({ grades, onDelete }: GradesListProps) {
               <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap border-b-2 border-r-2 border-black">Matières</th>
               <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap border-b-2 border-r-2 border-black">Notes</th>
               <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap border-b-2 border-r-2 border-black">Appréciations</th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap border-b-2 border-black">Actions</th>
+              {!readOnly && (
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap border-b-2 border-black">Actions</th>
+              )}
             </tr>
           </thead>
           <tbody className="divide-y divide-black">
@@ -40,14 +43,16 @@ export function GradesList({ grades, onDelete }: GradesListProps) {
                 <td className="px-6 py-4 whitespace-nowrap border-r-2 border-black">
                   {getGradeAppreciation(grade.score, grade.max_score)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <button
-                    onClick={() => onDelete(grade)}
-                    className="font-medium text-red-600 hover:text-red-800"
-                  >
-                    Supprimer
-                  </button>
-                </td>
+                {!readOnly && (
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <button
+                      onClick={() => onDelete(grade)}
+                      className="font-medium text-red-600 hover:text-red-800"
+                    >
+                      Supprimer
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

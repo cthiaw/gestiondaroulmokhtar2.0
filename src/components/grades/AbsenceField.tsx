@@ -6,9 +6,10 @@ interface AbsenceFieldProps {
   studentId: string;
   trimester: number;
   onSuccess: () => void;
+  readOnly?: boolean;
 }
 
-export function AbsenceField({ studentId, trimester, onSuccess }: AbsenceFieldProps) {
+export function AbsenceField({ studentId, trimester, onSuccess, readOnly = false }: AbsenceFieldProps) {
   const [absences, setAbsences] = useState(0);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -71,7 +72,7 @@ export function AbsenceField({ studentId, trimester, onSuccess }: AbsenceFieldPr
             value={absences}
             onChange={(e) => handleAbsenceChange(parseInt(e.target.value) || 0)}
             className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 sm:text-sm disabled:opacity-50"
-            disabled={loading}
+            disabled={loading || readOnly}
           />
         </div>
       </div>

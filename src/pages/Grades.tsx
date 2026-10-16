@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useStudents } from '../hooks/useStudents';
 import { useSchoolYear } from '../contexts/SchoolYearContext';
+import { SchoolYearSelect } from '../components/ui/SchoolYearSelect';
+import { AbsenceField } from '../components/grades/AbsenceField';
 import { Modal } from '../components/modals/Modal';
 import { GradeForm } from '../components/grades/GradeForm';
 import { GradesList } from '../components/grades/GradesList';
@@ -13,7 +15,9 @@ import { Grade, ReportCardData } from '../types/grades';
 
 export function Grades() {
   const { students, loading } = useStudents();
-  const { selectedYear } = useSchoolYear();
+  const { selectedYear, isCurrentYear } = useSchoolYear();
+  // Past years can be viewed but not changed
+  const readOnly = !isCurrentYear;
   const yearId = selectedYear?.id ?? '';
   const [selectedStudent, setSelectedStudent] = useState<any>(null);
   const [studentGrades, setStudentGrades] = useState<Grade[]>([]);
@@ -94,7 +98,7 @@ export function Grades() {
                     onClick={() => handleShowGrades(student)}
                     className="font-medium text-brand-700 hover:text-brand-900"
                   >
-                    Gérer les notes
+                    {readOnly ? 'Voir les notes' : 'Gérer les notes'}
                   </button>
                   <div className="inline-flex space-x-2">
                     {[1, 2, 3].map((trimester) => (
@@ -125,7 +129,10 @@ export function Grades() {
 
   return (
     <div>
-      <h1 className="page-title mb-6">Gestion des Notes · {selectedYear?.label}</h1>
+      <div className="page-header">
+        <h1 className="page-title">Gestion des Notes · {selectedYear?.label}</h1>
+        <SchoolYearSelect />
+      </div>
 
       <div className="space-y-8">
         {renderStudentsTable(frenchStudents, "Classes Françaises")}
@@ -167,18 +174,34 @@ export function Grades() {
                 <GradesList
                   grades={studentGrades}
                   onDelete={handleDeleteGrade}
+                  readOnly={readOnly}
                 />
               </div>
 
-              <div className="space-y-6">
-                <h3 className="text-lg font-medium text-gray-900">Nouvelle note</h3>
-                <GradeForm
-                  studentId={selectedStudent.id}
-                  classType={selectedStudent.class_type}
-                  onSuccess={handleFormSuccess}
-                  onCancel={gradeModal.closeModal}
-                />
-              </div>
+              {readOnly ? (
+                <div className="space-y-6">
+                  <h3 className="text-lg font-medium text-gray-900">Absences</h3>
+                  <AbsenceField
+                    studentId={selectedStudent.id}
+                    trimester={selectedTrimester}
+                    onSuccess={handleFormSuccess}
+                    readOnly
+                  />
+                  <p className="text-sm text-slate-500">
+                    Année {selectedYear?.label} en lecture seule : les notes s'ajoutent sur l'année en cours.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  <h3 className="text-lg font-medium text-gray-900">Nouvelle note</h3>
+                  <GradeForm
+                    studentId={selectedStudent.id}
+                    classType={selectedStudent.class_type}
+                    onSuccess={handleFormSuccess}
+                    onCancel={gradeModal.closeModal}
+                  />
+                </div>
+              )}
             </div>
           </div>
         )}

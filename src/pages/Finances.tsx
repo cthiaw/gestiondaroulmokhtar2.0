@@ -20,6 +20,7 @@ import { PaymentList } from '../components/finance/PaymentList';
 import { ExpenseList } from '../components/finance/ExpenseList';
 import { FinanceSummary } from '../components/finance/FinanceSummary';
 import { useSchoolYear } from '../contexts/SchoolYearContext';
+import { SchoolYearSelect } from '../components/ui/SchoolYearSelect';
 
 export function Finances() {
   const [payments, setPayments] = useState<Payment[]>([]);
@@ -32,7 +33,9 @@ export function Finances() {
   const expenseFormModal = useModal();
   const deletePaymentModal = useModal();
   const deleteExpenseModal = useModal();
-  const { selectedYear } = useSchoolYear();
+  const { selectedYear, isCurrentYear } = useSchoolYear();
+  // Past years can be viewed but not changed
+  const readOnly = !isCurrentYear;
   const yearId = selectedYear?.id ?? '';
 
   useEffect(() => {
@@ -101,13 +104,17 @@ export function Finances() {
 
   return (
     <div>
-      <h1 className="page-title mb-6">Gestion Financière · {selectedYear?.label}</h1>
+      <div className="page-header">
+        <h1 className="page-title">Gestion Financière · {selectedYear?.label}</h1>
+        <SchoolYearSelect />
+      </div>
 
       <FinanceSummary payments={payments} expenses={expenses} />
 
       <div className="space-y-8">
         <PaymentList
           payments={payments}
+          readOnly={readOnly}
           onAdd={() => {
             setSelectedPayment(null);
             paymentFormModal.openModal();
@@ -124,6 +131,7 @@ export function Finances() {
 
         <ExpenseList
           expenses={expenses}
+          readOnly={readOnly}
           onAdd={() => {
             setSelectedExpense(null);
             expenseFormModal.openModal();

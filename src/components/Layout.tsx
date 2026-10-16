@@ -10,12 +10,12 @@ import {
   LogOut,
   ChevronDown,
   Menu,
-  X,
-  CalendarDays
+  X
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useSchoolYear } from '../contexts/SchoolYearContext';
 import { LoadingSpinner } from './ui/LoadingSpinner';
+import { SchoolYearSelect } from './ui/SchoolYearSelect';
 import { signOut } from '../services/authService';
 import { Footer } from './Footer';
 
@@ -34,7 +34,7 @@ const navLinks = [
 
 export function Layout({ children }: LayoutProps) {
   const { user } = useAuth();
-  const { years, selectedYear, isCurrentYear, selectYear, loading: yearsLoading } = useSchoolYear();
+  const { selectedYear, isCurrentYear, loading: yearsLoading } = useSchoolYear();
   const navigate = useNavigate();
   const location = useLocation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -133,23 +133,7 @@ export function Layout({ children }: LayoutProps) {
             </div>
 
             <div className="flex items-center gap-2 sm:gap-4">
-              <label className="flex items-center gap-2 text-sm text-slate-600">
-                <CalendarDays className="hidden h-4 w-4 text-slate-400 sm:block" />
-                <span className="sr-only sm:not-sr-only">Année scolaire</span>
-                <select
-                  value={selectedYear?.id ?? ''}
-                  onChange={(e) => selectYear(e.target.value)}
-                  className={`rounded-lg border py-1.5 pl-2 pr-8 text-sm font-medium focus:border-brand-500 focus:ring-brand-500 ${
-                    isCurrentYear ? 'border-slate-300 text-slate-900' : 'border-amber-300 bg-amber-50 text-amber-900'
-                  }`}
-                >
-                  {years.map((year) => (
-                    <option key={year.id} value={year.id}>
-                      {year.label}{year.is_current ? ' (en cours)' : ''}
-                    </option>
-                  ))}
-                </select>
-              </label>
+              <SchoolYearSelect />
 
               <div className="relative" ref={dropdownRef}>
                 <button
@@ -185,7 +169,7 @@ export function Layout({ children }: LayoutProps) {
         <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
           {!isCurrentYear && selectedYear && (
             <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 print:hidden">
-              Vous consultez l'année scolaire {selectedYear.label}. Les nouvelles inscriptions se font sur l'année en cours.
+              Vous consultez l'année scolaire {selectedYear.label}, en lecture seule. Les inscriptions, notes, paiements et dépenses s'ajoutent sur l'année en cours.
             </div>
           )}
           {yearsLoading ? <LoadingSpinner /> : children}

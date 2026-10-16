@@ -10,21 +10,24 @@ interface PaymentListProps {
   onAdd: () => void;
   onEdit: (payment: Payment) => void;
   onDelete: (payment: Payment) => void;
+  readOnly?: boolean;
 }
 
-export function PaymentList({ payments, onAdd, onEdit, onDelete }: PaymentListProps) {
+export function PaymentList({ payments, onAdd, onEdit, onDelete, readOnly = false }: PaymentListProps) {
   const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
 
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-slate-900">Paiements</h2>
-        <button
-          onClick={onAdd}
-          className="btn-primary"
-        >
-          Nouveau Paiement
-        </button>
+        {!readOnly && (
+          <button
+            onClick={onAdd}
+            className="btn-primary"
+          >
+            Nouveau Paiement
+          </button>
+        )}
       </div>
       <div className="card overflow-hidden">
         <div className="overflow-x-auto">
@@ -67,21 +70,30 @@ export function PaymentList({ payments, onAdd, onEdit, onDelete }: PaymentListPr
                         <FileText className="h-5 w-5" />
                         <span>Voir reçu</span>
                       </button>
-                      <button
-                        onClick={() => onEdit(payment)}
-                        className="font-medium text-brand-700 hover:text-brand-900"
-                      >
-                        Modifier
-                      </button>
-                      <button
-                        onClick={() => onDelete(payment)}
-                        className="font-medium text-red-600 hover:text-red-800"
-                      >
-                        Supprimer
-                      </button>
+                      {!readOnly && (
+                        <>
+                          <button
+                            onClick={() => onEdit(payment)}
+                            className="font-medium text-brand-700 hover:text-brand-900"
+                          >
+                            Modifier
+                          </button>
+                          <button
+                            onClick={() => onDelete(payment)}
+                            className="font-medium text-red-600 hover:text-red-800"
+                          >
+                            Supprimer
+                          </button>
+                        </>
+                      )}
                     </td>
                   </tr>
                 ))}
+                {payments.length === 0 && (
+                  <tr>
+                    <td colSpan={6} className="px-6 py-6 text-center text-slate-500">Aucun paiement pour cette année scolaire</td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
