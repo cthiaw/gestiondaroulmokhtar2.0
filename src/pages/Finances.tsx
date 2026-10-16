@@ -46,22 +46,20 @@ export function Finances() {
   }
 
   const handlePaymentSubmit = async (data: Omit<Payment, 'id'>) => {
-    if (selectedPayment) {
-      await updatePayment(selectedPayment.id, data);
-    } else {
-      await createPayment(data);
-    }
+    const { error } = selectedPayment
+      ? await updatePayment(selectedPayment.id, data)
+      : await createPayment(data);
+    if (error) throw error;
     await loadPayments();
     paymentFormModal.closeModal();
     setSelectedPayment(null);
   };
 
   const handleExpenseSubmit = async (data: Omit<Expense, 'id'>) => {
-    if (selectedExpense) {
-      await updateExpense(selectedExpense.id, data);
-    } else {
-      await createExpense(data);
-    }
+    const { error } = selectedExpense
+      ? await updateExpense(selectedExpense.id, data)
+      : await createExpense(data);
+    if (error) throw error;
     await loadExpenses();
     expenseFormModal.closeModal();
     setSelectedExpense(null);
@@ -69,7 +67,11 @@ export function Finances() {
 
   const handleDeletePayment = async () => {
     if (!selectedPayment) return;
-    await deletePayment(selectedPayment.id);
+    const { error } = await deletePayment(selectedPayment.id);
+    if (error) {
+      alert('La suppression du paiement a échoué. Veuillez réessayer.');
+      return;
+    }
     await loadPayments();
     deletePaymentModal.closeModal();
     setSelectedPayment(null);
@@ -77,7 +79,11 @@ export function Finances() {
 
   const handleDeleteExpense = async () => {
     if (!selectedExpense) return;
-    await deleteExpense(selectedExpense.id);
+    const { error } = await deleteExpense(selectedExpense.id);
+    if (error) {
+      alert('La suppression de la dépense a échoué. Veuillez réessayer.');
+      return;
+    }
     await loadExpenses();
     deleteExpenseModal.closeModal();
     setSelectedExpense(null);

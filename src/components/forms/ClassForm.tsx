@@ -70,16 +70,15 @@ export function ClassForm({ classItem, onSuccess, onCancel }: ClassFormProps) {
         level: level
       };
 
-      if (classItem?.id) {
-        await supabase
-          .from('classes')
-          .update(dataToSubmit)
-          .eq('id', classItem.id);
-      } else {
-        await supabase
-          .from('classes')
-          .insert([dataToSubmit]);
-      }
+      const { error: saveError } = classItem?.id
+        ? await supabase
+            .from('classes')
+            .update(dataToSubmit)
+            .eq('id', classItem.id)
+        : await supabase
+            .from('classes')
+            .insert([dataToSubmit]);
+      if (saveError) throw saveError;
       onSuccess();
     } catch (error) {
       console.error('Erreur:', error);

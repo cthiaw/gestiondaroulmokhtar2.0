@@ -33,7 +33,11 @@ export function Subjects() {
 
   const handleDelete = async () => {
     if (!selectedSubject) return;
-    await deleteSubject(selectedSubject.id);
+    const { error } = await deleteSubject(selectedSubject.id);
+    if (error) {
+      alert('La suppression de la matière a échoué. Veuillez réessayer.');
+      return;
+    }
     await loadSubjects();
     deleteModal.closeModal();
     setSelectedSubject(null);
@@ -129,7 +133,7 @@ export function Subjects() {
         onClose={deleteModal.closeModal}
         onConfirm={handleDelete}
         title="Supprimer la matière"
-        message="Êtes-vous sûr de vouloir supprimer cette matière ? Cette action est irréversible."
+        message="Êtes-vous sûr de vouloir supprimer cette matière ? Toutes les notes saisies pour cette matière seront aussi supprimées. Cette action est irréversible."
       />
     </div>
   );

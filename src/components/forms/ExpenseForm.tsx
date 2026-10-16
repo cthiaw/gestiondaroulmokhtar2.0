@@ -52,7 +52,7 @@ export function ExpenseForm({ expense, onSubmit, onCancel }: ExpenseFormProps) {
       };
       await onSubmit(expenseData);
     } catch (error) {
-      setError('Une erreur est survenue');
+      setError('Échec de l\'enregistrement : les données n\'ont pas été sauvegardées. Vérifiez votre connexion et réessayez.');
       console.error('Error:', error);
     }
   };

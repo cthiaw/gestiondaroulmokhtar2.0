@@ -26,11 +26,10 @@ export function SubjectForm({ subject, onSuccess, onCancel }: SubjectFormProps) 
     }
 
     try {
-      if (subject?.id) {
-        await updateSubject(subject.id, formData);
-      } else {
-        await createSubject(formData);
-      }
+      const { error: saveError } = subject?.id
+        ? await updateSubject(subject.id, formData)
+        : await createSubject(formData);
+      if (saveError) throw saveError;
       onSuccess();
     } catch (err) {
       setError('Une erreur est survenue');

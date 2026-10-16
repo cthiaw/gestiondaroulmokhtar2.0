@@ -60,13 +60,14 @@ export function GradeForm({ studentId, onSuccess, onCancel, classType }: GradeFo
     }
 
     try {
-      await saveGrade({
+      const { error: saveError } = await saveGrade({
         student_id: studentId,
         subject_id: formData.subject_id,
         trimester: formData.trimester,
         score,
         max_score: maxScore
       });
+      if (saveError) throw saveError;
       
       setFormData(prev => ({
         ...prev,
@@ -77,7 +78,7 @@ export function GradeForm({ studentId, onSuccess, onCancel, classType }: GradeFo
       
       onSuccess();
     } catch (error) {
-      setError('Une erreur est survenue');
+      setError('Échec de l\'enregistrement : la note n\'a pas été sauvegardée. Réessayez.');
       console.error('Error:', error);
     }
   };

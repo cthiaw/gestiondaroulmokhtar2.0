@@ -15,9 +15,11 @@
 ALTER TABLE students 
 ADD COLUMN birth_date_text text DEFAULT 'XX/XX/XXXX' NOT NULL;
 
--- Copy existing data with default value
+-- Copy existing data in DD/MM/YYYY format (the placeholder only when the date is missing).
+-- birth_date is still a date here, so it is formatted explicitly: comparing it with the
+-- text placeholder made this migration fail, and an ISO copy would have been wiped by 0029.
 UPDATE students 
-SET birth_date_text = COALESCE(birth_date, 'XX/XX/XXXX');
+SET birth_date_text = COALESCE(to_char(birth_date, 'DD/MM/YYYY'), 'XX/XX/XXXX');
 
 -- Drop old column
 ALTER TABLE students 
