@@ -9,3 +9,16 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Le service worker et le manifeste doivent toujours être relus,
+# sinon les téléphones gardent une ancienne version de l'application.
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Cache-Control = "no-cache"
+    Content-Type = "application/manifest+json"

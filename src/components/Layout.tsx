@@ -9,6 +9,7 @@ import {
   BookOpen,
   LogOut,
   ChevronDown,
+  Download,
   Menu,
   X
 } from 'lucide-react';
@@ -18,6 +19,7 @@ import { LoadingSpinner } from './ui/LoadingSpinner';
 import { SchoolYearSelect } from './ui/SchoolYearSelect';
 import { signOut } from '../services/authService';
 import { Footer } from './Footer';
+import { useInstallPrompt } from '../lib/pwa';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -40,6 +42,7 @@ export function Layout({ children }: LayoutProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { canInstall, install } = useInstallPrompt();
 
   const handleLogout = async () => {
     try {
@@ -152,6 +155,18 @@ export function Layout({ children }: LayoutProps) {
                     <div className="border-b border-slate-100 px-4 py-2 sm:hidden">
                       <p className="truncate text-sm text-slate-600">{user?.email}</p>
                     </div>
+                    {canInstall && (
+                      <button
+                        onClick={() => {
+                          setIsDropdownOpen(false);
+                          install();
+                        }}
+                        className="flex w-full items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                      >
+                        <Download className="mr-2 h-4 w-4" />
+                        Installer l'application
+                      </button>
+                    )}
                     <button
                       onClick={handleLogout}
                       className="flex w-full items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
