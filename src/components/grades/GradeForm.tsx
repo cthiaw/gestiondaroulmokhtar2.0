@@ -96,7 +96,7 @@ export function GradeForm({ studentId, onSuccess, onCancel, classType }: GradeFo
           <select
             value={formData.subject_id}
             onChange={(e) => setFormData({ ...formData, subject_id: e.target.value })}
-            className="mt-1 block w-full rounded-md border-2 border-black shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="mt-1 block w-full rounded-md border-2 border-black shadow-sm focus:border-brand-500 focus:ring-brand-500"
             required
           >
             <option value="">Sélectionner une matière</option>
@@ -113,7 +113,7 @@ export function GradeForm({ studentId, onSuccess, onCancel, classType }: GradeFo
           <select
             value={formData.trimester}
             onChange={(e) => setFormData({ ...formData, trimester: parseInt(e.target.value) })}
-            className="mt-1 block w-full rounded-md border-2 border-black shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="mt-1 block w-full rounded-md border-2 border-black shadow-sm focus:border-brand-500 focus:ring-brand-500"
             required
           >
             <option value={1}>Premier trimestre</option>
@@ -131,7 +131,7 @@ export function GradeForm({ studentId, onSuccess, onCancel, classType }: GradeFo
               step="0.25"
               value={formData.score}
               onChange={(e) => setFormData({ ...formData, score: e.target.value })}
-              className="mt-1 block w-full rounded-md border-2 border-black shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              className="mt-1 block w-full rounded-md border-2 border-black shadow-sm focus:border-brand-500 focus:ring-brand-500"
               required
             />
           </div>
@@ -143,7 +143,7 @@ export function GradeForm({ studentId, onSuccess, onCancel, classType }: GradeFo
               step="1"
               value={formData.max_score}
               onChange={(e) => setFormData({ ...formData, max_score: e.target.value })}
-              className="mt-1 block w-full rounded-md border-2 border-black shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              className="mt-1 block w-full rounded-md border-2 border-black shadow-sm focus:border-brand-500 focus:ring-brand-500"
               required
             />
           </div>
@@ -153,13 +153,13 @@ export function GradeForm({ studentId, onSuccess, onCancel, classType }: GradeFo
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-2 border-black rounded-md hover:bg-gray-50"
+            className="btn-secondary"
           >
             Annuler
           </button>
           <button
             type="submit"
-            className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border-2 border-indigo-600 rounded-md hover:bg-indigo-700 hover:border-indigo-700"
+            className="btn-primary"
           >
             Enregistrer
           </button>

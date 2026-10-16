@@ -66,7 +66,7 @@ export function AbsenceField({ studentId, trimester, onSuccess }: AbsenceFieldPr
             min="0"
             value={absences}
             onChange={(e) => handleAbsenceChange(parseInt(e.target.value) || 0)}
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm disabled:opacity-50"
+            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 sm:text-sm disabled:opacity-50"
             disabled={loading}
           />
         </div>

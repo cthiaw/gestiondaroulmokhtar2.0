@@ -10,30 +10,30 @@ interface SubjectTableProps {
 
 export function SubjectTable({ title, subjects, onEdit, onDelete }: SubjectTableProps) {
   return (
-    <div className="bg-white shadow-md rounded-lg overflow-hidden">
-      <h3 className="text-lg font-semibold p-4 bg-gray-50 border-b">{title}</h3>
+    <div className="card overflow-hidden">
+      <h3 className="border-b border-slate-200 px-6 py-4 text-base font-semibold text-slate-900">{title}</h3>
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+        <table className="min-w-full divide-y divide-slate-200">
+          <thead className="bg-slate-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nom</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Nom</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white divide-y divide-slate-200">
             {subjects.map((subject) => (
               <tr key={subject.id}>
                 <td className="px-6 py-4 whitespace-nowrap">{subject.name}</td>
                 <td className="px-6 py-4 whitespace-nowrap space-x-2">
                   <button
                     onClick={() => onEdit(subject)}
-                    className="text-indigo-600 hover:text-indigo-900"
+                    className="font-medium text-brand-700 hover:text-brand-900"
                   >
                     Modifier
                   </button>
                   <button
                     onClick={() => onDelete(subject)}
-                    className="text-red-600 hover:text-red-900"
+                    className="font-medium text-red-600 hover:text-red-800"
                   >
                     Supprimer
                   </button>

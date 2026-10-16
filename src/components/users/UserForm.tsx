@@ -51,7 +51,7 @@ export function UserForm({ onSuccess, onCancel }: UserFormProps) {
           type="text"
           value={formData.first_name}
           onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500"
           required
         />
       </div>
@@ -62,7 +62,7 @@ export function UserForm({ onSuccess, onCancel }: UserFormProps) {
           type="text"
           value={formData.last_name}
           onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500"
           required
         />
       </div>
@@ -73,7 +73,7 @@ export function UserForm({ onSuccess, onCancel }: UserFormProps) {
           type="email"
           value={formData.email}
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500"
           required
         />
       </div>
@@ -84,7 +84,7 @@ export function UserForm({ onSuccess, onCancel }: UserFormProps) {
           type="password"
           value={formData.password}
           onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500"
           required
           minLength={6}
         />
@@ -95,7 +95,7 @@ export function UserForm({ onSuccess, onCancel }: UserFormProps) {
         <select
           value={formData.role}
           onChange={(e) => setFormData({ ...formData, role: e.target.value as UserRole })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500"
           required
         >
           {ROLES.map(role => (
@@ -110,13 +110,13 @@ export function UserForm({ onSuccess, onCancel }: UserFormProps) {
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+          className="btn-secondary"
         >
           Annuler
         </button>
         <button
           type="submit"
-          className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700"
+          className="btn-primary"
         >
           Créer
         </button>

@@ -17,7 +17,7 @@ export function ErrorDialog({ isOpen, onClose, title, message }: ErrorDialogProp
         <p className="text-center text-gray-600">{message}</p>
         <button
           onClick={onClose}
-          className="mt-6 px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
+          className="btn-secondary mt-6"
         >
           Fermer
         </button>

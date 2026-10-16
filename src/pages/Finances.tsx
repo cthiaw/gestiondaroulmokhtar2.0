@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import { Modal } from '../components/modals/Modal';
 import { ConfirmDialog } from '../components/dialogs/ConfirmDialog';
 import { useModal } from '../hooks/useModal';
@@ -84,12 +85,12 @@ export function Finances() {
   };
 
   if (loading) {
-    return <div className="text-center">Chargement...</div>;
+    return <LoadingSpinner />;
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Gestion Financière</h1>
+    <div>
+      <h1 className="page-title mb-6">Gestion Financière</h1>
 
       <FinanceSummary payments={payments} expenses={expenses} />
 

@@ -102,7 +102,7 @@ export function ClassForm({ classItem, onSuccess, onCancel }: ClassFormProps) {
             type="checkbox"
             checked={useCustomLevel}
             onChange={(e) => setUseCustomLevel(e.target.checked)}
-            className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+            className="h-4 w-4 text-brand-600 focus:ring-brand-500 border-gray-300 rounded"
           />
           <span className="text-sm text-gray-600">Utiliser un niveau personnalisé</span>
         </div>
@@ -113,14 +113,14 @@ export function ClassForm({ classItem, onSuccess, onCancel }: ClassFormProps) {
             value={customLevel}
             onChange={(e) => setCustomLevel(e.target.value.toUpperCase())}
             placeholder="Entrez le niveau (ex: 6EME)"
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500"
             required
           />
         ) : (
           <select
             value={formData.level}
             onChange={(e) => setFormData({ ...formData, level: e.target.value })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500"
             required
           >
             <option value="">Sélectionner</option>
@@ -138,7 +138,7 @@ export function ClassForm({ classItem, onSuccess, onCancel }: ClassFormProps) {
         <select
           value={formData.class_type}
           onChange={(e) => setFormData({ ...formData, class_type: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500"
           required
         >
           <option value="">Sélectionner</option>
@@ -155,7 +155,7 @@ export function ClassForm({ classItem, onSuccess, onCancel }: ClassFormProps) {
         <select
           value={formData.teacher_id}
           onChange={(e) => setFormData({ ...formData, teacher_id: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500"
         >
           <option value="">Sélectionner</option>
           {teachers.map((teacher) => (
@@ -170,13 +170,13 @@ export function ClassForm({ classItem, onSuccess, onCancel }: ClassFormProps) {
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+          className="btn-secondary"
         >
           Annuler
         </button>
         <button
           type="submit"
-          className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700"
+          className="btn-primary"
         >
           {classItem ? 'Modifier' : 'Créer'}
         </button>
