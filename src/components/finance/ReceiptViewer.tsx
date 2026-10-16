@@ -35,7 +35,7 @@ export function ReceiptViewer({ payment, onClose }: ReceiptViewerProps) {
           <div className="absolute right-4 top-4 flex space-x-2">
             <button
               onClick={handleDownload}
-              className="px-4 py-2 bg-indigo-600 text-white rounded flex items-center gap-2 hover:bg-indigo-700"
+              className="btn-primary"
             >
               <Download className="h-5 w-5" />
               Télécharger PDF

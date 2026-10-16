@@ -7,10 +7,10 @@ interface TableProps {
 
 export function Table({ children, className = '' }: TableProps) {
   return (
-    <div className={`overflow-hidden rounded-lg shadow-md ${className}`}>
+    <div className={`card overflow-hidden ${className}`}>
       <div className="overflow-x-auto">
         <div className="inline-block min-w-full align-middle">
-          <table className="min-w-full divide-y divide-gray-200">
+          <table className="min-w-full divide-y divide-slate-200">
             {children}
           </table>
         </div>

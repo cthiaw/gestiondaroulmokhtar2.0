@@ -45,30 +45,30 @@ export function Users() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Gestion des Utilisateurs</h1>
+    <div>
+      <div className="page-header">
+        <h1 className="page-title">Gestion des Utilisateurs</h1>
         <button
           onClick={() => formModal.openModal()}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-indigo-700"
+          className="btn-primary"
         >
           <UserPlus className="h-5 w-5" />
           Nouvel Utilisateur
         </button>
       </div>
 
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+      <div className="card overflow-hidden">
+        <table className="min-w-full divide-y divide-slate-200">
+          <thead className="bg-slate-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nom</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Prénom</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Rôle</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Nom</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Prénom</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Email</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Rôle</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-slate-200">
             {users.map((user) => (
               <tr key={user.id}>
                 <td className="px-6 py-4 whitespace-nowrap">{user.last_name}</td>
@@ -81,7 +81,7 @@ export function Users() {
                       setSelectedUser(user);
                       deleteModal.openModal();
                     }}
-                    className="text-red-600 hover:text-red-900"
+                    className="font-medium text-red-600 hover:text-red-800"
                   >
                     Supprimer
                   </button>

@@ -16,7 +16,7 @@ export function ReportCardTable({ grades }: ReportCardTableProps) {
   return (
     <div className="mb-6 overflow-hidden border-2 border-black rounded-lg no-break">
       <table className="min-w-full">
-        <thead className="bg-gray-50">
+        <thead className="bg-slate-50">
           <tr>
             <th className="px-4 py-3 text-left text-xs font-bold text-gray-900 uppercase border-b-2 border-r-2 border-black w-1/3">Matière</th>
             <th className="px-4 py-3 text-center text-xs font-bold text-gray-900 uppercase border-b-2 border-r-2 border-black w-[10%]">Coef.</th>

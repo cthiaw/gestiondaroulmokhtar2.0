@@ -36,14 +36,14 @@ export function ReportCard({ data, onClose }: ReportCardProps) {
           <div className="absolute right-4 top-4 flex space-x-2 print:hidden">
             <button
               onClick={handleDownload}
-              className="px-4 py-2 bg-indigo-600 text-white rounded flex items-center gap-2 hover:bg-indigo-700"
+              className="btn-primary"
             >
               <Download className="h-5 w-5" />
               Télécharger PDF
             </button>
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+              className="btn-secondary"
             >
               Fermer
             </button>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signIn } from '../services/authService';
-import { School, Loader2 } from 'lucide-react';
+import { School, Loader2, Mail, Lock } from 'lucide-react';
 
 export function Login() {
   const [email, setEmail] = useState('');
@@ -30,80 +30,77 @@ export function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-800 via-green-700 to-green-600 flex flex-col justify-center">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md px-4">
-        <div className="bg-white py-8 px-6 shadow-2xl rounded-xl">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-4">
-              <School className="h-8 w-8 text-green-600" />
-            </div>
-            <h2 className="text-2xl font-extrabold text-gray-900 mb-1">
-              DAROUL MOKHTAR
-            </h2>
-            <p className="text-sm text-gray-600">
-              École Franco-Arabe
-            </p>
+    <div className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-brand-900 px-4 py-12">
+      {/* Motif décoratif */}
+      <div className="pointer-events-none absolute -left-32 -top-32 h-96 w-96 rounded-full bg-brand-700/40 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-40 -right-24 h-[28rem] w-[28rem] rounded-full bg-accent-500/20 blur-3xl" />
+
+      <div className="relative mx-auto w-full max-w-md">
+        <div className="mb-8 text-center">
+          <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-accent-400 shadow-lg shadow-black/20">
+            <School className="h-8 w-8 text-brand-950" />
           </div>
+          <h1 className="text-2xl font-extrabold tracking-wide text-white">DAROUL MOKHTAR</h1>
+          <p className="mt-1 text-sm text-brand-100/80">École Franco-Arabe · Espace de gestion</p>
+        </div>
+
+        <div className="rounded-2xl bg-white px-6 py-8 shadow-2xl sm:px-8">
+          <h2 className="mb-6 text-lg font-semibold text-slate-900">Connexion</h2>
 
           {error && (
-            <div className="mb-4 p-4 rounded-md bg-red-50 border border-red-200">
-              <p className="text-sm text-red-600 text-center">{error}</p>
+            <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3">
+              <p className="text-center text-sm text-red-600">{error}</p>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label 
-                htmlFor="email" 
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="email" className="block text-sm font-medium text-slate-700">
                 Email
               </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                required
-              />
+              <div className="relative mt-1">
+                <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <input
+                  id="email"
+                  type="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="block w-full py-2.5 pl-9"
+                  placeholder="nom@exemple.com"
+                  required
+                />
+              </div>
             </div>
 
             <div>
-              <label 
-                htmlFor="password" 
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="password" className="block text-sm font-medium text-slate-700">
                 Mot de passe
               </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                required
-              />
+              <div className="relative mt-1">
+                <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <input
+                  id="password"
+                  type="password"
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="block w-full py-2.5 pl-9"
+                  required
+                />
+              </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-            >
-              {loading ? (
-                <Loader2 className="h-5 w-5 animate-spin mr-2" />
-              ) : null}
-              {loading ? 'Connexion...' : 'Se connecter'}
+            <button type="submit" disabled={loading} className="btn-primary w-full py-3">
+              {loading && <Loader2 className="h-5 w-5 animate-spin" />}
+              {loading ? 'Connexion…' : 'Se connecter'}
             </button>
           </form>
-
-          <div className="mt-8 pt-6 border-t border-gray-200">
-            <p className="text-xs text-center text-gray-600">
-              © {new Date().getFullYear()} DAROUL MOKHTAR. Tous droits réservés.
-            </p>
-          </div>
         </div>
+
+        <p className="mt-8 text-center text-xs text-brand-100/60">
+          © {new Date().getFullYear()} DAROUL MOKHTAR. Tous droits réservés.
+        </p>
       </div>
     </div>
   );

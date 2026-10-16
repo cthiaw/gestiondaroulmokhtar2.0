@@ -15,15 +15,15 @@ export function SubjectList({ subjects, onEdit, onDelete }: SubjectListProps) {
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+      <table className="min-w-full divide-y divide-slate-200">
+        <thead className="bg-slate-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nom</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+            <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Nom</th>
+            <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Type</th>
+            <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="bg-white divide-y divide-slate-200">
           {subjects.map((subject) => (
             <tr key={subject.id}>
               <td className="px-6 py-4 whitespace-nowrap">{subject.name}</td>
@@ -33,13 +33,13 @@ export function SubjectList({ subjects, onEdit, onDelete }: SubjectListProps) {
               <td className="px-6 py-4 whitespace-nowrap space-x-2">
                 <button
                   onClick={() => onEdit(subject)}
-                  className="text-indigo-600 hover:text-indigo-900"
+                  className="font-medium text-brand-700 hover:text-brand-900"
                 >
                   Modifier
                 </button>
                 <button
                   onClick={() => onDelete(subject)}
-                  className="text-red-600 hover:text-red-900"
+                  className="font-medium text-red-600 hover:text-red-800"
                 >
                   Supprimer
                 </button>

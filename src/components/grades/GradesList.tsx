@@ -20,12 +20,12 @@ export function GradesList({ grades, onDelete }: GradesListProps) {
     <div className="bg-white overflow-hidden rounded-lg border-2 border-black">
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-black">
-          <thead className="bg-gray-50">
+          <thead className="bg-slate-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap border-b-2 border-r-2 border-black">Matières</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap border-b-2 border-r-2 border-black">Notes</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap border-b-2 border-r-2 border-black">Appréciations</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap border-b-2 border-black">Actions</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap border-b-2 border-r-2 border-black">Matières</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap border-b-2 border-r-2 border-black">Notes</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap border-b-2 border-r-2 border-black">Appréciations</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap border-b-2 border-black">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-black">
@@ -43,7 +43,7 @@ export function GradesList({ grades, onDelete }: GradesListProps) {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
                     onClick={() => onDelete(grade)}
-                    className="text-red-600 hover:text-red-900"
+                    className="font-medium text-red-600 hover:text-red-800"
                   >
                     Supprimer
                   </button>

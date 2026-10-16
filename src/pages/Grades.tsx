@@ -66,20 +66,20 @@ export function Grades() {
   const arabicStudents = students.filter(s => s.class_type === 'ARABE');
 
   const renderStudentsTable = (students: any[], title: string) => (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <h2 className="text-xl font-semibold p-4 bg-gray-50 border-b">{title}</h2>
+    <div className="card overflow-hidden">
+      <h2 className="border-b border-slate-200 px-6 py-4 text-lg font-semibold text-slate-900">{title}</h2>
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+        <table className="min-w-full divide-y divide-slate-200">
+          <thead className="bg-slate-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Matricule</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Nom</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Prénom</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Niveau</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Actions</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">Matricule</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">Nom</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">Prénom</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">Niveau</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-slate-200">
             {students.map((student) => (
               <tr key={student.id}>
                 <td className="px-6 py-4 whitespace-nowrap">{student.matricule}</td>
@@ -89,7 +89,7 @@ export function Grades() {
                 <td className="px-6 py-4 whitespace-nowrap space-x-2">
                   <button
                     onClick={() => handleShowGrades(student)}
-                    className="text-indigo-600 hover:text-indigo-900"
+                    className="font-medium text-brand-700 hover:text-brand-900"
                   >
                     Gérer les notes
                   </button>
@@ -98,7 +98,7 @@ export function Grades() {
                       <button
                         key={trimester}
                         onClick={() => handleGenerateReportCard(student, trimester)}
-                        className="text-green-600 hover:text-green-900"
+                        className="rounded-md bg-brand-50 px-2 py-0.5 text-sm font-medium text-brand-700 hover:bg-brand-100"
                       >
                         Bulletin T{trimester}
                       </button>
@@ -121,8 +121,8 @@ export function Grades() {
   );
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Gestion des Notes</h1>
+    <div>
+      <h1 className="page-title mb-6">Gestion des Notes</h1>
 
       <div className="space-y-8">
         {renderStudentsTable(frenchStudents, "Classes Françaises")}
@@ -146,10 +146,10 @@ export function Grades() {
                       setSelectedTrimester(trimester);
                       loadStudentGrades(selectedStudent.id, trimester);
                     }}
-                    className={`px-4 py-2 rounded-md ${
+                    className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                       selectedTrimester === trimester
-                        ? 'bg-indigo-600 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        ? 'bg-brand-600 text-white shadow-sm'
+                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                     }`}
                   >
                     Trimestre {trimester}
