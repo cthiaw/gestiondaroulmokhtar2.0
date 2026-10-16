@@ -186,7 +186,7 @@ export function Students() {
         onClose={deleteModal.closeModal}
         onConfirm={handleDelete}
         title="Supprimer l'élève"
-        message="Êtes-vous sûr de vouloir supprimer cet élève ? Ses paiements, notes et absences (français et arabe) seront aussi supprimés. Cette action est irréversible."
+        message="Êtes-vous sûr de vouloir supprimer cet élève ? Il n'apparaîtra plus dans les listes, mais ses paiements, notes et absences sont conservés pour l'audit."
       />
     </div>
   );

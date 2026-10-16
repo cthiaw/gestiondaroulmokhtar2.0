@@ -133,7 +133,7 @@ export function Subjects() {
         onClose={deleteModal.closeModal}
         onConfirm={handleDelete}
         title="Supprimer la matière"
-        message="Êtes-vous sûr de vouloir supprimer cette matière ? Toutes les notes saisies pour cette matière seront aussi supprimées. Cette action est irréversible."
+        message="Êtes-vous sûr de vouloir supprimer cette matière ? Elle ne sera plus proposée, mais les notes déjà saisies sont conservées."
       />
     </div>
   );

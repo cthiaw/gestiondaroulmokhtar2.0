@@ -6,6 +6,7 @@ export async function fetchSubjects(classType: string) {
     let query = supabase
       .from('subjects')
       .select('*')
+      .is('archived_at', null)
       .order('name');
     
     if (classType) {
@@ -57,9 +58,10 @@ export async function updateSubject(id: string, subject: Partial<Subject>) {
 
 export async function deleteSubject(id: string) {
   try {
+    // Archive instead of deleting so the grades given in this subject are kept
     const { error } = await supabase
       .from('subjects')
-      .delete()
+      .update({ archived_at: new Date().toISOString() })
       .eq('id', id);
 
     if (error) throw error;
