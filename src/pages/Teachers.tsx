@@ -67,15 +67,15 @@ export function Teachers() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Gestion des Personnels</h1>
+    <div>
+      <div className="page-header">
+        <h1 className="page-title">Gestion des Personnels</h1>
         <button
           onClick={() => {
             setSelectedTeacher(null);
             formModal.openModal();
           }}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-indigo-700"
+          className="btn-primary"
         >
           <UserPlus className="h-5 w-5" />
           Nouveau Personnel
@@ -83,16 +83,16 @@ export function Teachers() {
       </div>
 
       <Table>
-        <thead className="bg-gray-50">
+        <thead className="bg-slate-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Matricule</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prénom</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Matricule</th>
+            <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Nom</th>
+            <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Prénom</th>
+            <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Type</th>
+            <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="bg-white divide-y divide-slate-200">
           {teachers.map((teacher) => (
             <tr key={teacher.id}>
               <td className="px-6 py-4 whitespace-nowrap font-medium">{teacher.matricule}</td>
@@ -102,7 +102,7 @@ export function Teachers() {
               <td className="px-6 py-4 whitespace-nowrap space-x-2">
                 <button
                   onClick={() => handleEdit(teacher)}
-                  className="text-indigo-600 hover:text-indigo-900"
+                  className="font-medium text-brand-700 hover:text-brand-900"
                 >
                   Modifier
                 </button>
@@ -111,7 +111,7 @@ export function Teachers() {
                     setSelectedTeacher(teacher);
                     deleteModal.openModal();
                   }}
-                  className="text-red-600 hover:text-red-900"
+                  className="font-medium text-red-600 hover:text-red-800"
                 >
                   Supprimer
                 </button>

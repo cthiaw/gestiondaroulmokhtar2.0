@@ -51,7 +51,7 @@ export function SubjectForm({ subject, onSuccess, onCancel }: SubjectFormProps) 
           type="text"
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500"
           required
         />
       </div>
@@ -61,7 +61,7 @@ export function SubjectForm({ subject, onSuccess, onCancel }: SubjectFormProps) 
         <select
           value={formData.class_type}
           onChange={(e) => setFormData({ ...formData, class_type: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500"
           required
         >
           <option value="">Sélectionner le type</option>
@@ -77,13 +77,13 @@ export function SubjectForm({ subject, onSuccess, onCancel }: SubjectFormProps) 
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+          className="btn-secondary"
         >
           Annuler
         </button>
         <button
           type="submit"
-          className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700"
+          className="btn-primary"
         >
           {subject ? 'Modifier' : 'Créer'}
         </button>

@@ -70,7 +70,7 @@ export function PaymentForm({ payment, onSubmit, onCancel }: PaymentFormProps) {
         <select
           value={formData.student_id}
           onChange={(e) => setFormData({ ...formData, student_id: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500"
           required
         >
           <option value="">Sélectionner un élève</option>
@@ -87,7 +87,7 @@ export function PaymentForm({ payment, onSubmit, onCancel }: PaymentFormProps) {
         <select
           value={formData.payment_type}
           onChange={(e) => setFormData({ ...formData, payment_type: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500"
           required
         >
           <option value="">Sélectionner le type</option>
@@ -105,7 +105,7 @@ export function PaymentForm({ payment, onSubmit, onCancel }: PaymentFormProps) {
           <select
             value={formData.status}
             onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500"
             required
           >
             {PAYMENT_STATUS.map((status) => (
@@ -123,7 +123,7 @@ export function PaymentForm({ payment, onSubmit, onCancel }: PaymentFormProps) {
           type="number"
           value={formData.amount}
           onChange={(e) => setFormData({ ...formData, amount: Number(e.target.value) })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500"
           required
           min="0"
         />
@@ -135,7 +135,7 @@ export function PaymentForm({ payment, onSubmit, onCancel }: PaymentFormProps) {
           type="date"
           value={formData.payment_date}
           onChange={(e) => setFormData({ ...formData, payment_date: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500"
           required
         />
       </div>
@@ -144,13 +144,13 @@ export function PaymentForm({ payment, onSubmit, onCancel }: PaymentFormProps) {
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+          className="btn-secondary"
         >
           Annuler
         </button>
         <button
           type="submit"
-          className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700"
+          className="btn-primary"
         >
           {payment ? 'Modifier' : 'Créer'}
         </button>

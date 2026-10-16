@@ -2,6 +2,100 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Styles de base : typographie et champs de formulaire lisibles partout */
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-slate-50 text-slate-800;
+  }
+
+  /* Sélecteurs d'élément simples : ils passent après le reset de Tailwind
+     tout en restant moins prioritaires que les classes des composants */
+  input,
+  select,
+  textarea {
+    @apply rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm transition-colors placeholder:text-slate-400;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    @apply border-brand-500 outline-none ring-2 ring-brand-500/20;
+  }
+
+  input[type='checkbox'],
+  input[type='radio'],
+  input[type='file'] {
+    @apply rounded-none border-0 bg-transparent p-0 shadow-none;
+  }
+
+  :where(input:disabled, input[readonly], select:disabled, textarea:disabled) {
+    @apply cursor-not-allowed bg-slate-100 text-slate-500;
+  }
+
+  :where(input[type='checkbox'], input[type='radio']) {
+    @apply accent-brand-600;
+  }
+
+  :where(label) {
+    @apply text-slate-700;
+  }
+
+  :where(button, a):focus-visible {
+    @apply outline-none ring-2 ring-brand-500 ring-offset-2;
+  }
+}
+
+/* Composants réutilisables */
+@layer components {
+  .page-header {
+    @apply mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between;
+  }
+
+  .page-title {
+    @apply text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold shadow-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn bg-brand-600 text-white hover:bg-brand-700;
+  }
+
+  .btn-secondary {
+    @apply btn border border-slate-300 bg-white text-slate-700 hover:bg-slate-50;
+  }
+
+  .btn-danger {
+    @apply btn bg-red-600 text-white hover:bg-red-700;
+  }
+
+  .card {
+    @apply rounded-xl border border-slate-200 bg-white shadow-card;
+  }
+}
+
+@media screen {
+  /* En-têtes et lignes de tableau homogènes */
+  :where(thead th) {
+    @apply font-semibold text-slate-600;
+  }
+
+  :where(tbody tr) {
+    @apply transition-colors;
+  }
+
+  :where(tbody tr:hover) {
+    @apply bg-brand-50/40;
+  }
+}
+
 /* Custom scrollbar styles */
 @layer utilities {
   .scrollbar-custom {
@@ -72,6 +166,15 @@
   .no-break {
     page-break-inside: avoid;
   }
+}
+
+/* Bulletins et reçus : texte noir, sans effet de survol */
+.report-card {
+  color: #000;
+}
+
+.report-card tbody tr:hover {
+  background-color: transparent;
 }
 
 /* Table wrapper styles */

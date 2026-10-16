@@ -73,15 +73,15 @@ export function Classes() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Gestion des Classes</h1>
+    <div>
+      <div className="page-header">
+        <h1 className="page-title">Gestion des Classes</h1>
         <button
           onClick={() => {
             setSelectedClass(null);
             formModal.openModal();
           }}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-indigo-700"
+          className="btn-primary"
         >
           <FolderPlus className="h-5 w-5" />
           Nouvelle Classe
@@ -90,7 +90,7 @@ export function Classes() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {classes.map((classItem) => (
-          <div key={classItem.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div key={classItem.id} className="card overflow-hidden">
             <div className="p-4 sm:p-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
                 <div>
@@ -102,7 +102,7 @@ export function Classes() {
                     Professeur: {classItem.teachers ? `${classItem.teachers.first_name} ${classItem.teachers.last_name}` : 'Non assigné'}
                   </p>
                 </div>
-                <div className="flex items-center bg-blue-100 text-blue-800 rounded-full px-3 py-1">
+                <div className="flex items-center bg-brand-50 text-brand-700 rounded-full px-3 py-1">
                   <Users className="h-4 w-4 mr-1" />
                   <span className="text-sm font-medium">{classItem.student_count || 0} élèves</span>
                 </div>
@@ -111,7 +111,7 @@ export function Classes() {
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                 <button
                   onClick={() => toggleClassExpansion(classItem.id)}
-                  className="text-indigo-600 hover:text-indigo-900 text-sm font-medium flex items-center"
+                  className="text-brand-700 hover:text-brand-900 text-sm font-medium flex items-center"
                 >
                   {expandedClass === classItem.id ? (
                     <>
@@ -128,7 +128,7 @@ export function Classes() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => handleEdit(classItem)}
-                    className="text-indigo-600 hover:text-indigo-900 text-sm font-medium"
+                    className="text-brand-600 hover:text-brand-900 text-sm font-medium"
                   >
                     Modifier
                   </button>

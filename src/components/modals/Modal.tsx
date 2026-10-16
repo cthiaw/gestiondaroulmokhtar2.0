@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
 
 interface ModalProps {
@@ -10,6 +10,15 @@ interface ModalProps {
 }
 
 export function Modal({ isOpen, onClose, title, children, size = 'md' }: ModalProps) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const sizeClasses = {
@@ -20,24 +29,25 @@ export function Modal({ isOpen, onClose, title, children, size = 'md' }: ModalPr
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
-      <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
-        <div 
-          className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" 
+    <div className="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
+      <div className="flex min-h-screen items-center justify-center p-4">
+        <div
+          className="fixed inset-0 bg-slate-900/50 backdrop-blur-[2px] transition-opacity"
           onClick={onClose}
         />
 
-        <div className={`relative bg-white rounded-lg w-full ${sizeClasses[size]} mx-auto shadow-xl`}>
-          <div className="flex items-center justify-between p-4 border-b">
-            <h3 className="text-lg font-medium text-gray-900">{title}</h3>
+        <div className={`relative mx-auto w-full ${sizeClasses[size]} rounded-2xl bg-white shadow-2xl ring-1 ring-slate-900/5`}>
+          <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
+            <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-500"
+              className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+              aria-label="Fermer"
             >
               <X className="h-5 w-5" />
             </button>
           </div>
-          <div className="p-6 max-h-[calc(100vh-12rem)] overflow-y-auto">
+          <div className="max-h-[calc(100vh-10rem)] overflow-y-auto px-6 py-5">
             {children}
           </div>
         </div>
