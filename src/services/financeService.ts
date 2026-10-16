@@ -1,7 +1,7 @@
 import { supabase } from '../lib/supabase';
 import { Payment, Expense } from '../types/finance';
 
-export async function fetchPayments() {
+export async function fetchPayments(schoolYearId: string) {
   try {
     const { data, error } = await supabase
       .from('payments')
@@ -13,6 +13,7 @@ export async function fetchPayments() {
           matricule
         )
       `)
+      .eq('school_year_id', schoolYearId)
       .order('payment_date', { ascending: false });
 
     if (error) throw error;
@@ -71,7 +72,7 @@ export async function deletePayment(id: string) {
   }
 }
 
-export async function fetchExpenses() {
+export async function fetchExpenses(schoolYearId: string) {
   try {
     const { data, error } = await supabase
       .from('expenses')
@@ -83,6 +84,7 @@ export async function fetchExpenses() {
           matricule
         )
       `)
+      .eq('school_year_id', schoolYearId)
       .order('expense_date', { ascending: false });
 
     if (error) throw error;

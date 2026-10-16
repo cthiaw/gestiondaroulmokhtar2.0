@@ -16,6 +16,7 @@ export interface SaveGradeData {
   trimester: number;
   score: number;
   max_score: number;
+  school_year_id: string;
 }
 
 export interface ReportCardData {
@@ -28,6 +29,7 @@ export interface ReportCardData {
     birth_date: string;
   };
   trimester: number;
+  school_year_label: string;
   grades: Array<{
     subject_name: string;
     score: number;

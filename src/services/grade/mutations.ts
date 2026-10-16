@@ -9,7 +9,7 @@ export async function saveGrade(data: SaveGradeData) {
     const { data: grade, error } = await supabase
       .from('grades')
       .upsert([data], {
-        onConflict: 'student_id,subject_id,trimester'
+        onConflict: 'student_id,subject_id,trimester,school_year_id'
       })
       .select()
       .single();

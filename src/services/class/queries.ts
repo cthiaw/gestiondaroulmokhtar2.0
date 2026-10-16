@@ -1,8 +1,9 @@
 import { supabase } from '../../lib/supabase';
 import { Class } from './types';
 import { fetchClassStudents } from './students';
+import { fetchStudentsForYear } from '../schoolYearService';
 
-export async function fetchClasses(): Promise<Class[]> {
+export async function fetchClasses(schoolYearId: string): Promise<Class[]> {
   try {
     const { data: classes, error } = await supabase
       .from('classes')
@@ -17,20 +18,18 @@ export async function fetchClasses(): Promise<Class[]> {
 
     if (error) throw error;
 
-    // Fetch students for each class
-    const classesWithStudents = await Promise.all(
-      (classes || []).map(async (classItem) => {
-        const { students, studentCount } = await fetchClassStudents(
-          classItem.level,
-          classItem.class_type
-        );
-        return {
-          ...classItem,
-          student_count: studentCount,
-          students
-        };
-      })
-    );
+    // One query for the whole year, then split by class
+    const yearStudents = await fetchStudentsForYear(schoolYearId);
+    const classesWithStudents = (classes || []).map((classItem) => {
+      const students = yearStudents
+        .filter((student) => student.level === classItem.level && student.class_type === classItem.class_type)
+        .map(({ id, matricule, first_name, last_name }) => ({ id, matricule, first_name, last_name }));
+      return {
+        ...classItem,
+        student_count: students.length,
+        students
+      };
+    });
 
     return classesWithStudents;
   } catch (error) {

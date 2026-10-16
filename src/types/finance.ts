@@ -5,6 +5,7 @@ export interface Payment {
   payment_date: string;
   payment_type: string;
   status: string;
+  school_year_id?: string;
   student?: {
     first_name: string;
     last_name: string;
@@ -19,6 +20,7 @@ export interface Expense {
   expense_date: string;
   expense_type: string;
   staff_id?: string;
+  school_year_id?: string;
   staff?: {
     first_name: string;
     last_name: string;

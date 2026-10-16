@@ -10,9 +10,12 @@ import {
   LogOut,
   ChevronDown,
   Menu,
-  X
+  X,
+  CalendarDays
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useSchoolYear } from '../contexts/SchoolYearContext';
+import { LoadingSpinner } from './ui/LoadingSpinner';
 import { signOut } from '../services/authService';
 import { Footer } from './Footer';
 
@@ -31,6 +34,7 @@ const navLinks = [
 
 export function Layout({ children }: LayoutProps) {
   const { user } = useAuth();
+  const { years, selectedYear, isCurrentYear, selectYear, loading: yearsLoading } = useSchoolYear();
   const navigate = useNavigate();
   const location = useLocation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -128,38 +132,63 @@ export function Layout({ children }: LayoutProps) {
               <span className="hidden text-sm font-medium text-slate-500 lg:block">{currentPage}</span>
             </div>
 
-            <div className="relative" ref={dropdownRef}>
-              <button
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center gap-2 rounded-full py-1 pl-1 pr-2 text-slate-700 transition-colors hover:bg-slate-100"
-              >
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-100 text-sm font-semibold text-brand-800">
-                  {initials}
-                </span>
-                <span className="hidden max-w-[16rem] truncate text-sm font-medium sm:block">{user?.email}</span>
-                <ChevronDown className="h-4 w-4 text-slate-400" />
-              </button>
+            <div className="flex items-center gap-2 sm:gap-4">
+              <label className="flex items-center gap-2 text-sm text-slate-600">
+                <CalendarDays className="hidden h-4 w-4 text-slate-400 sm:block" />
+                <span className="sr-only sm:not-sr-only">Année scolaire</span>
+                <select
+                  value={selectedYear?.id ?? ''}
+                  onChange={(e) => selectYear(e.target.value)}
+                  className={`rounded-lg border py-1.5 pl-2 pr-8 text-sm font-medium focus:border-brand-500 focus:ring-brand-500 ${
+                    isCurrentYear ? 'border-slate-300 text-slate-900' : 'border-amber-300 bg-amber-50 text-amber-900'
+                  }`}
+                >
+                  {years.map((year) => (
+                    <option key={year.id} value={year.id}>
+                      {year.label}{year.is_current ? ' (en cours)' : ''}
+                    </option>
+                  ))}
+                </select>
+              </label>
 
-              {isDropdownOpen && (
-                <div className="absolute right-0 z-50 mt-2 w-56 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-lg">
-                  <div className="border-b border-slate-100 px-4 py-2 sm:hidden">
-                    <p className="truncate text-sm text-slate-600">{user?.email}</p>
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="flex items-center gap-2 rounded-full py-1 pl-1 pr-2 text-slate-700 transition-colors hover:bg-slate-100"
+                >
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-100 text-sm font-semibold text-brand-800">
+                    {initials}
+                  </span>
+                  <span className="hidden max-w-[16rem] truncate text-sm font-medium sm:block">{user?.email}</span>
+                  <ChevronDown className="h-4 w-4 text-slate-400" />
+                </button>
+
+                {isDropdownOpen && (
+                  <div className="absolute right-0 z-50 mt-2 w-56 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-lg">
+                    <div className="border-b border-slate-100 px-4 py-2 sm:hidden">
+                      <p className="truncate text-sm text-slate-600">{user?.email}</p>
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      className="flex w-full items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                    >
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Déconnexion
+                    </button>
                   </div>
-                  <button
-                    onClick={handleLogout}
-                    className="flex w-full items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
-                  >
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Déconnexion
-                  </button>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </header>
 
         <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-          {children}
+          {!isCurrentYear && selectedYear && (
+            <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 print:hidden">
+              Vous consultez l'année scolaire {selectedYear.label}. Les nouvelles inscriptions se font sur l'année en cours.
+            </div>
+          )}
+          {yearsLoading ? <LoadingSpinner /> : children}
         </main>
 
         <Footer />

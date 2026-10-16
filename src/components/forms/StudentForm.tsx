@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createStudent, updateStudent } from '../../services/studentService';
 import { CLASS_LEVELS } from '../../constants/classLevels';
 import { useMatricule } from '../../hooks/useMatricule';
+import { useSchoolYear } from '../../contexts/SchoolYearContext';
 import { Student, StudentFormData } from '../../types/student';
 import { toFormBirthDate, isValidBirthDateInput } from '../../utils/studentUtils';
 
@@ -15,6 +16,7 @@ interface StudentFormProps {
 
 export function StudentForm({ student, frenchLevel, arabicLevel, onSuccess, onCancel }: StudentFormProps) {
   const { matricule, loading: matriculeLoading } = useMatricule('student', student?.id);
+  const { selectedYear } = useSchoolYear();
   const [formData, setFormData] = useState<StudentFormData>({
     first_name: student?.first_name || '',
     last_name: student?.last_name || '',
@@ -45,9 +47,11 @@ export function StudentForm({ student, frenchLevel, arabicLevel, onSuccess, onCa
 
     try {
       if (student?.id) {
-        const { error: updateError } = await updateStudent(student.id, formData);
+        if (!selectedYear) throw new Error('Aucune année scolaire sélectionnée');
+        const { error: updateError } = await updateStudent(student.id, formData, selectedYear.id);
         if (updateError) throw updateError;
       } else {
+        // The database enrolls a new student in the current school year
         const { error: createError } = await createStudent(formData);
         if (createError) throw createError;
       }

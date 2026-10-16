@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getStudentAbsences, createOrUpdateAbsences } from '../../services/absence';
+import { useSchoolYear } from '../../contexts/SchoolYearContext';
 
 interface AbsenceFieldProps {
   studentId: string;
@@ -11,17 +12,18 @@ export function AbsenceField({ studentId, trimester, onSuccess }: AbsenceFieldPr
   const [absences, setAbsences] = useState(0);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const { selectedYear } = useSchoolYear();
+  const yearId = selectedYear?.id;
 
   useEffect(() => {
     loadAbsences();
-  }, [studentId, trimester]);
+  }, [studentId, trimester, yearId]);
 
   async function loadAbsences() {
+    if (!yearId) return;
     setLoading(true);
-    const data = await getStudentAbsences(studentId, trimester);
-    if (data) {
-      setAbsences(data.count);
-    }
+    const data = await getStudentAbsences(studentId, trimester, yearId);
+    setAbsences(data ? data.count : 0);
     setLoading(false);
   }
 
@@ -33,11 +35,13 @@ export function AbsenceField({ studentId, trimester, onSuccess }: AbsenceFieldPr
         return;
       }
 
+      if (!yearId) return;
       setLoading(true);
       const success = await createOrUpdateAbsences({
         student_id: studentId,
         trimester,
-        count: newCount
+        count: newCount,
+        school_year_id: yearId
       });
 
       if (success) {

@@ -1,20 +1,12 @@
-import { supabase } from '../../lib/supabase';
 import { Student } from './types';
 import { handleError } from '../../utils/errorHandling';
 import { withRetry } from '../../utils/apiUtils';
+import { fetchStudentsForYear } from '../schoolYearService';
 
-export async function fetchStudents(): Promise<Student[]> {
+export async function fetchStudents(schoolYearId: string): Promise<Student[]> {
   try {
-    const { data, error } = await withRetry(() => 
-      supabase
-        .from('students')
-        .select('id, matricule, first_name, last_name, birth_date, gender, level, class_type')
-        .is('archived_at', null)
-        .order('last_name')
-    );
-
-    if (error) throw error;
-    return data || [];
+    const data = await withRetry(() => fetchStudentsForYear(schoolYearId));
+    return data as Student[];
   } catch (error) {
     handleError('Error fetching students:', error);
     return [];
