@@ -3,23 +3,27 @@ import { createStudent, updateStudent } from '../../services/studentService';
 import { CLASS_LEVELS } from '../../constants/classLevels';
 import { useMatricule } from '../../hooks/useMatricule';
 import { Student, StudentFormData } from '../../types/student';
-import { formatDisplayDate } from '../../utils/dateValidation';
+import { toFormBirthDate, isValidBirthDateInput } from '../../utils/studentUtils';
 
 interface StudentFormProps {
   student?: Student;
+  frenchLevel?: string;
+  arabicLevel?: string;
   onSuccess: () => void;
   onCancel: () => void;
 }
 
-export function StudentForm({ student, onSuccess, onCancel }: StudentFormProps) {
+export function StudentForm({ student, frenchLevel, arabicLevel, onSuccess, onCancel }: StudentFormProps) {
   const { matricule, loading: matriculeLoading } = useMatricule('student', student?.id);
   const [formData, setFormData] = useState<StudentFormData>({
     first_name: student?.first_name || '',
     last_name: student?.last_name || '',
-    birth_date: student?.birth_date ? formatDisplayDate(student.birth_date) : '',
+    birth_date: toFormBirthDate(student?.birth_date),
     gender: student?.gender || '',
-    french_level: student?.level || 'CI',
-    arabic_level: student?.level || 'CI',
+    // Each student has two records (French and Arabic) with their own level:
+    // prefill both so saving doesn't overwrite one with the other.
+    french_level: frenchLevel || student?.level || 'CI',
+    arabic_level: arabicLevel || student?.level || 'CI',
     matricule: student?.matricule || ''
   });
   const [error, setError] = useState('');
@@ -34,6 +38,11 @@ export function StudentForm({ student, onSuccess, onCancel }: StudentFormProps) 
     e.preventDefault();
     setError('');
 
+    if (!isValidBirthDateInput(formData.birth_date)) {
+      setError('La date de naissance doit être au format JJ/MM/AAAA (ou laissée vide)');
+      return;
+    }
+
     try {
       if (student?.id) {
         const { error: updateError } = await updateStudent(student.id, formData);
@@ -44,7 +53,7 @@ export function StudentForm({ student, onSuccess, onCancel }: StudentFormProps) 
       }
       onSuccess();
     } catch (err) {
-      setError('Une erreur est survenue lors de l\'enregistrement');
+      setError('Échec de l\'enregistrement : l\'élève n\'a pas été sauvegardé. Réessayez.');
       console.error('Error:', err);
     }
   };

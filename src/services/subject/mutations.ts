@@ -26,9 +26,10 @@ export async function updateSubject(data: UpdateSubjectDTO) {
 }
 
 export async function deleteSubject(id: string) {
+  // Archive instead of deleting so the grades given in this subject are kept
   const { error } = await supabase
     .from('subjects')
-    .delete()
+    .update({ archived_at: new Date().toISOString() })
     .eq('id', id);
 
   if (error) throw error;

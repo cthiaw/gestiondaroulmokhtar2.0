@@ -17,6 +17,7 @@ export async function fetchClassStudents(level: string, classType: string): Prom
       .select('id, matricule, first_name, last_name')
       .eq('level', level)
       .eq('class_type', classType)
+      .is('archived_at', null)
       .order('last_name');
 
     if (error) throw error;

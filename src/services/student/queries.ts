@@ -9,6 +9,7 @@ export async function fetchStudents(): Promise<Student[]> {
       supabase
         .from('students')
         .select('id, matricule, first_name, last_name, birth_date, gender, level, class_type')
+        .is('archived_at', null)
         .order('last_name')
     );
 

@@ -8,6 +8,7 @@ export async function fetchStudents(): Promise<Student[]> {
     const { data, error } = await supabase
       .from('students')
       .select('*')
+      .is('archived_at', null)
       .order('last_name');
 
     if (error) throw error;
@@ -80,7 +81,7 @@ export async function deleteStudent(id: string) {
     // Get base matricule without -AR suffix
     const baseMatricule = student.matricule.replace('-AR', '');
     
-    // Use the delete_student RPC function
+    // delete_student archives both records; payments, grades and absences are kept
     const { error } = await supabase.rpc('delete_student', {
       base_matricule: baseMatricule
     });

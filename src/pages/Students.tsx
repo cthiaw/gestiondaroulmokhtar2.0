@@ -24,6 +24,7 @@ export function Students() {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [selectedLevels, setSelectedLevels] = useState<{ french?: string; arabic?: string }>({});
   const formModal = useModal();
   const deleteModal = useModal();
   const { user } = useAuth();
@@ -50,8 +51,9 @@ export function Students() {
     }
   }
 
-  const handleEdit = (student: Student) => {
+  const handleEdit = (student: Student, french: Student | null, arabic: Student | null) => {
     setSelectedStudent(student);
+    setSelectedLevels({ french: french?.level, arabic: arabic?.level });
     formModal.openModal();
   };
 
@@ -143,7 +145,7 @@ export function Students() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap space-x-2">
                   <button
-                    onClick={() => handleEdit(student)}
+                    onClick={() => handleEdit(student, french, arabic)}
                     className="font-medium text-brand-700 hover:text-brand-900"
                   >
                     Modifier
@@ -170,7 +172,10 @@ export function Students() {
         title={selectedStudent ? 'Modifier un élève' : 'Ajouter un élève'}
       >
         <StudentForm
+          key={selectedStudent?.id ?? 'new'}
           student={selectedStudent || undefined}
+          frenchLevel={selectedLevels.french}
+          arabicLevel={selectedLevels.arabic}
           onSuccess={handleFormSuccess}
           onCancel={formModal.closeModal}
         />
@@ -181,7 +186,7 @@ export function Students() {
         onClose={deleteModal.closeModal}
         onConfirm={handleDelete}
         title="Supprimer l'élève"
-        message="Êtes-vous sûr de vouloir supprimer cet élève ? Cette action est irréversible."
+        message="Êtes-vous sûr de vouloir supprimer cet élève ? Il n'apparaîtra plus dans les listes, mais ses paiements, notes et absences sont conservés pour l'audit."
       />
     </div>
   );

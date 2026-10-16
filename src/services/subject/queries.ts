@@ -7,6 +7,7 @@ export async function fetchSubjects(classType?: string): Promise<Subject[]> {
     let query = supabase
       .from('subjects')
       .select('*')
+      .is('archived_at', null)
       .order('name');
     
     if (classType) {
