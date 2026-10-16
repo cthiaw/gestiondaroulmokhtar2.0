@@ -1,6 +1,7 @@
 # Empêche la mise en pause du projet Supabase (plan gratuit) en envoyant
 # une petite requête à la base deux fois par semaine.
-# Secrets requis : SUPABASE_URL, SUPABASE_ANON_KEY
+# L'URL et la clé publique (anon) sont lues dans le fichier .env du dépôt :
+# aucun secret GitHub n'est nécessaire.
 name: Supabase keepalive
 
 on:
@@ -12,11 +13,12 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Requête légère sur la table classes
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
+          set -a; . ./.env; set +a
+          SUPABASE_URL="$VITE_SUPABASE_URL"
+          SUPABASE_ANON_KEY="$VITE_SUPABASE_ANON_KEY"
           curl -fsS "$SUPABASE_URL/rest/v1/classes?select=id&limit=1" \
             -H "apikey: $SUPABASE_ANON_KEY" \
             -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
