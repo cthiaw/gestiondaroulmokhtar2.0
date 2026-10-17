@@ -8,7 +8,7 @@ import { fetchTeachers, deleteTeacher, Teacher } from '../services/teacherServic
 import { useAuth } from '../contexts/AuthContext';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import { useNavigate } from 'react-router-dom';
-import { STAFF_TYPES } from '../constants/staffTypes';
+import { STAFF_TYPES, teacherTitle } from '../constants/staffTypes';
 import { Table } from '../components/ui/Table';
 
 export function Teachers() {
@@ -58,8 +58,9 @@ export function Teachers() {
     setSelectedTeacher(null);
   };
 
-  const getStaffTypeLabel = (value: string) => {
-    return STAFF_TYPES.find(type => type.value === value)?.label || value;
+  const getStaffTypeLabel = (teacher: Teacher) => {
+    if (teacher.staff_type === 'MAITRE') return teacherTitle(teacher.gender);
+    return STAFF_TYPES.find(type => type.value === teacher.staff_type)?.label || teacher.staff_type;
   };
 
   if (loading) {
@@ -98,7 +99,7 @@ export function Teachers() {
               <td className="px-6 py-4 whitespace-nowrap font-medium">{teacher.matricule}</td>
               <td className="px-6 py-4 whitespace-nowrap">{teacher.last_name}</td>
               <td className="px-6 py-4 whitespace-nowrap">{teacher.first_name}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{getStaffTypeLabel(teacher.staff_type)}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{getStaffTypeLabel(teacher)}</td>
               <td className="px-6 py-4 whitespace-nowrap space-x-2">
                 <button
                   onClick={() => handleEdit(teacher)}

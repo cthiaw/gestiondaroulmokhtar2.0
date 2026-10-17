@@ -14,6 +14,7 @@ export interface Class {
   teachers?: {
     first_name: string;
     last_name: string;
+    gender?: string | null;
   };
   student_count?: number;
   students?: ClassStudent[];

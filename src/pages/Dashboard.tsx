@@ -73,7 +73,7 @@ export function Dashboard() {
           color="blue"
         />
         <StatCard
-          title="Total Professeurs"
+          title="Maîtres et maîtresses"
           value={stats.teacherCount.toString()}
           icon={GraduationCap}
           color="brand"

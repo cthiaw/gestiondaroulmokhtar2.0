@@ -24,9 +24,10 @@ export function getGradeAppreciation(score: number, maxScore: number): string {
 }
 
 /**
- * Get general appreciation for report card
+ * Get general appreciation for report card, from an average out of `outOf`
  */
-export function getGeneralAppreciation(average: number): string {
+export function getGeneralAppreciation(averageOutOf: number, outOf = 20): string {
+  const average = normalizeScore(averageOutOf, outOf);
   if (average >= 18) return "Excellent travail ! Continue ainsi !";
   if (average >= 16) return "Très bon travail, félicitations !";
   if (average >= 14) return "Bon travail, continue tes efforts !";

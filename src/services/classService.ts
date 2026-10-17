@@ -10,7 +10,8 @@ export async function fetchClasses(): Promise<{ data: Class[]; error: any }> {
         *,
         teachers (
           first_name,
-          last_name
+          last_name,
+          gender
         )
       `)
       .order('level');
@@ -91,7 +92,8 @@ export async function fetchClassById(id: string) {
         *,
         teachers (
           first_name,
-          last_name
+          last_name,
+          gender
         )
       `)
       .eq('id', id)

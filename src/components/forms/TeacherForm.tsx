@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createTeacher, updateTeacher, Teacher } from '../../services/teacherService';
-import { STAFF_TYPES } from '../../constants/staffTypes';
+import { STAFF_TYPES, GENDERS } from '../../constants/staffTypes';
 import { useMatricule } from '../../hooks/useMatricule';
 
 interface TeacherFormProps {
@@ -14,7 +14,8 @@ export function TeacherForm({ teacher, onSuccess, onCancel }: TeacherFormProps) 
     first_name: teacher?.first_name || '',
     last_name: teacher?.last_name || '',
     matricule: teacher?.matricule || '',
-    staff_type: teacher?.staff_type || ''
+    staff_type: teacher?.staff_type || '',
+    gender: teacher?.gender || ''
   });
   const [error, setError] = useState('');
 
@@ -49,6 +50,11 @@ export function TeacherForm({ teacher, onSuccess, onCancel }: TeacherFormProps) 
       return;
     }
 
+    if (formData.staff_type === 'MAITRE' && !formData.gender) {
+      setError('Indiquez s\'il s\'agit d\'un maître (homme) ou d\'une maîtresse (femme)');
+      return;
+    }
+
     try {
       // Validate matricule uniqueness
       const isUnique = await validateMatricule(formData.matricule);
@@ -57,11 +63,12 @@ export function TeacherForm({ teacher, onSuccess, onCancel }: TeacherFormProps) 
         return;
       }
 
+      const dataToSave = { ...formData, gender: formData.gender || null };
       if (teacher?.id) {
-        const { error } = await updateTeacher(teacher.id, formData);
+        const { error } = await updateTeacher(teacher.id, dataToSave);
         if (error) throw error;
       } else {
-        const { error } = await createTeacher(formData);
+        const { error } = await createTeacher(dataToSave);
         if (error) throw error;
       }
       onSuccess();
@@ -91,6 +98,23 @@ export function TeacherForm({ teacher, onSuccess, onCancel }: TeacherFormProps) 
           {STAFF_TYPES.map((type) => (
             <option key={type.value} value={type.value}>
               {type.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Sexe</label>
+        <select
+          value={formData.gender}
+          onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500"
+          required={formData.staff_type === 'MAITRE'}
+        >
+          <option value="">Sélectionner</option>
+          {GENDERS.map((gender) => (
+            <option key={gender.value} value={gender.value}>
+              {gender.label}
             </option>
           ))}
         </select>

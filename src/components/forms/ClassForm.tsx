@@ -42,7 +42,7 @@ export function ClassForm({ classItem, onSuccess, onCancel }: ClassFormProps) {
       const { data } = await supabase
         .from('teachers')
         .select('id, first_name, last_name')
-        .eq('staff_type', 'PROFESSEUR')
+        .eq('staff_type', 'MAITRE')
         .order('last_name');
       if (data) setTeachers(data);
     } catch (error) {
@@ -150,7 +150,7 @@ export function ClassForm({ classItem, onSuccess, onCancel }: ClassFormProps) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Professeur</label>
+        <label className="block text-sm font-medium text-gray-700">Maître / Maîtresse</label>
         <select
           value={formData.teacher_id}
           onChange={(e) => setFormData({ ...formData, teacher_id: e.target.value })}

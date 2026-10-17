@@ -11,7 +11,7 @@ import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 const ROLE_LABELS = {
   ADMIN: 'Administrateur',
   SECRETAIRE: 'Secrétaire',
-  PROFESSEUR: 'Professeur'
+  MAITRE: 'Maître / Maîtresse'
 };
 
 export function Users() {

@@ -4,12 +4,14 @@ import { fetchSubjects } from '../../services/subjectService';
 import { saveGrade } from '../../services/gradeService';
 import { AbsenceField } from './AbsenceField';
 import { useSchoolYear } from '../../contexts/SchoolYearContext';
+import { findClassId, fetchGradingScales, saveGradingScales, GradingScales } from '../../services/gradingScaleService';
 
 interface GradeFormProps {
   studentId: string;
   onSuccess: () => void;
   onCancel: () => void;
   classType: string;
+  level: string;
 }
 
 interface FormData {
@@ -19,7 +21,7 @@ interface FormData {
   max_score: string;
 }
 
-export function GradeForm({ studentId, onSuccess, onCancel, classType }: GradeFormProps) {
+export function GradeForm({ studentId, onSuccess, onCancel, classType, level }: GradeFormProps) {
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [formData, setFormData] = useState<FormData>({
     subject_id: '',
@@ -28,16 +30,38 @@ export function GradeForm({ studentId, onSuccess, onCancel, classType }: GradeFo
     max_score: '20'
   });
   const [error, setError] = useState('');
+  const [classId, setClassId] = useState<string | null>(null);
+  const [scales, setScales] = useState<GradingScales>({});
   const { selectedYear } = useSchoolYear();
+  const yearId = selectedYear?.id;
 
   useEffect(() => {
     loadSubjects();
   }, [classType]);
 
+  useEffect(() => {
+    loadScales();
+  }, [level, classType, yearId]);
+
   async function loadSubjects() {
     const { data } = await fetchSubjects(classType);
     setSubjects(data);
   }
+
+  // The class's scales, set by its maître or maîtresse
+  async function loadScales() {
+    if (!yearId) return;
+    const id = await findClassId(level, classType);
+    setClassId(id);
+    setScales(id ? await fetchGradingScales(yearId, id) : {});
+  }
+
+  const subjectScale = formData.subject_id ? scales[formData.subject_id] : undefined;
+
+  const handleSubjectChange = (subjectId: string) => {
+    const scale = scales[subjectId];
+    setFormData({ ...formData, subject_id: subjectId, max_score: scale ? String(scale) : '20' });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,6 +77,11 @@ export function GradeForm({ studentId, onSuccess, onCancel, classType }: GradeFo
 
     if (isNaN(score) || isNaN(maxScore)) {
       setError('Les notes doivent être des nombres valides');
+      return;
+    }
+
+    if (!Number.isInteger(maxScore) || maxScore <= 0) {
+      setError('Le barème doit être un nombre entier supérieur à 0');
       return;
     }
 
@@ -76,7 +105,17 @@ export function GradeForm({ studentId, onSuccess, onCancel, classType }: GradeFo
         school_year_id: selectedYear.id
       });
       if (saveError) throw saveError;
-      
+
+      // The first grade given in a subject sets the class's scale
+      if (!subjectScale && classId) {
+        try {
+          await saveGradingScales(selectedYear.id, classId, { [formData.subject_id]: maxScore });
+          setScales({ ...scales, [formData.subject_id]: maxScore });
+        } catch (scaleError) {
+          console.error('Error saving grading scale:', scaleError);
+        }
+      }
+
       setFormData(prev => ({
         ...prev,
         subject_id: '',
@@ -104,7 +143,7 @@ export function GradeForm({ studentId, onSuccess, onCancel, classType }: GradeFo
           <label className="block text-sm font-medium text-gray-700">Matière</label>
           <select
             value={formData.subject_id}
-            onChange={(e) => setFormData({ ...formData, subject_id: e.target.value })}
+            onChange={(e) => handleSubjectChange(e.target.value)}
             className="mt-1 block w-full rounded-md border-2 border-black shadow-sm focus:border-brand-500 focus:ring-brand-500"
             required
           >
@@ -145,18 +184,26 @@ export function GradeForm({ studentId, onSuccess, onCancel, classType }: GradeFo
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Note maximale</label>
+            <label className="block text-sm font-medium text-gray-700">Notée sur</label>
             <input
               type="number"
               min="1"
               step="1"
               value={formData.max_score}
               onChange={(e) => setFormData({ ...formData, max_score: e.target.value })}
-              className="mt-1 block w-full rounded-md border-2 border-black shadow-sm focus:border-brand-500 focus:ring-brand-500"
+              className="mt-1 block w-full rounded-md border-2 border-black shadow-sm focus:border-brand-500 focus:ring-brand-500 read-only:bg-slate-100"
+              readOnly={!!subjectScale}
               required
             />
           </div>
         </div>
+        {formData.subject_id && (
+          <p className="text-sm text-slate-500">
+            {subjectScale
+              ? `Barème de la classe : sur ${subjectScale}. Il se modifie avec le bouton Barèmes.`
+              : 'Pas encore de barème pour cette matière dans la classe : celui saisi ici deviendra le barème de la classe.'}
+          </p>
+        )}
 
         <div className="flex justify-end space-x-3">
           <button

@@ -29,7 +29,7 @@ export async function fetchDashboardStats(schoolYearId: string, isCurrentYear: b
       fetchStudentsForYear(schoolYearId),
       supabase.from('teachers')
         .select('id', { count: 'exact', head: true })
-        .eq('staff_type', 'PROFESSEUR'),
+        .eq('staff_type', 'MAITRE'),
       supabase.from('classes')
         .select('id', { count: 'exact', head: true }),
       paymentsQuery
