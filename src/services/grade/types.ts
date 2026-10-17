@@ -35,7 +35,10 @@ export interface ReportCardData {
     score: number;
     maxScore: number;
   }>;
+  total_score: number;
+  total_max_score: number;
   average: number;
+  average_out_of: number;
   rank: number;
   total_students: number;
   absences: number;

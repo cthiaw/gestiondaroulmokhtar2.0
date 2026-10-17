@@ -1,12 +1,10 @@
-import React from 'react';
 import { Download } from 'lucide-react';
 import html2pdf from 'html2pdf.js';
-import { ReportCardData } from '../../types/grades';
+import { ReportCardData } from '../../services/grade/types';
 import { ReportCardHeader } from './report-card/ReportCardHeader';
 import { StudentInfo } from './report-card/StudentInfo';
 import { GradesTable } from './report-card/GradesTable';
 import { Summary } from './report-card/Summary';
-import { getGeneralAppreciation } from '../../utils/gradeUtils';
 
 interface ReportCardProps {
   data: ReportCardData;
@@ -61,11 +59,16 @@ export function ReportCard({ data, onClose }: ReportCardProps) {
               absences={data.absences}
             />
 
-            <GradesTable grades={data.grades} />
+            <GradesTable
+              grades={data.grades}
+              totalScore={data.total_score}
+              totalMaxScore={data.total_max_score}
+            />
 
             <Summary
               average={data.average}
-              appreciation={getGeneralAppreciation(data.average)}
+              outOf={data.average_out_of}
+              appreciation={data.appreciation}
             />
 
             {/* Footer */}

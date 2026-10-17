@@ -11,6 +11,7 @@ export interface Class extends ClassBase {
   teachers?: {
     first_name: string;
     last_name: string;
+    gender?: string | null;
   };
   student_count?: number;
   students?: Array<{

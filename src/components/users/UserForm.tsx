@@ -10,14 +10,14 @@ interface UserFormProps {
 const ROLES: { value: UserRole; label: string }[] = [
   { value: 'ADMIN', label: 'Administrateur' },
   { value: 'SECRETAIRE', label: 'Secrétaire' },
-  { value: 'PROFESSEUR', label: 'Professeur' }
+  { value: 'MAITRE', label: 'Maître / Maîtresse' }
 ];
 
 export function UserForm({ onSuccess, onCancel }: UserFormProps) {
   const [formData, setFormData] = useState<CreateUserData>({
     email: '',
     password: '',
-    role: 'PROFESSEUR',
+    role: 'MAITRE',
     first_name: '',
     last_name: ''
   });

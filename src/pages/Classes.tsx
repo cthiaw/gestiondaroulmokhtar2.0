@@ -7,6 +7,7 @@ import { ErrorDialog } from '../components/dialogs/ErrorDialog';
 import { useModal } from '../hooks/useModal';
 import { CLASS_TYPES } from '../constants/classTypes';
 import { CLASS_LEVELS } from '../constants/classLevels';
+import { teacherTitle } from '../constants/staffTypes';
 import { useClasses } from '../hooks/useClasses';
 import { useSchoolYear } from '../contexts/SchoolYearContext';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
@@ -102,7 +103,7 @@ export function Classes() {
                   </h3>
                   <p className="text-sm text-gray-500">Type: {getClassTypeLabel(classItem.class_type)}</p>
                   <p className="text-sm text-gray-500">
-                    Professeur: {classItem.teachers ? `${classItem.teachers.first_name} ${classItem.teachers.last_name}` : 'Non assigné'}
+                    {teacherTitle(classItem.teachers?.gender)} : {classItem.teachers ? `${classItem.teachers.first_name} ${classItem.teachers.last_name}` : 'Non assigné'}
                   </p>
                 </div>
                 <div className="flex items-center bg-brand-50 text-brand-700 rounded-full px-3 py-1">

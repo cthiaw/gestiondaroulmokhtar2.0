@@ -6,6 +6,7 @@ export interface Teacher {
   last_name: string;
   matricule: string;
   staff_type: string;
+  gender?: string | null;
 }
 
 export async function fetchTeachers() {

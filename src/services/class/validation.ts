@@ -22,7 +22,7 @@ export function validateClassData(data: CreateClassDTO) {
   }
 
   if (!data.teacher_id) {
-    throw new ClassValidationError('Veuillez sélectionner un professeur');
+    throw new ClassValidationError('Veuillez sélectionner un maître ou une maîtresse');
   }
 }
 

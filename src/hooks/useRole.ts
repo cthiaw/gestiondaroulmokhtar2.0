@@ -8,7 +8,7 @@ export function useRole() {
     return {
       isAdmin: false,
       isSecretaire: false,
-      isProfesseur: false,
+      isMaitre: false,
       canAccessUsers: false,
       canAccessFinances: false,
       canAccessGrades: false,
@@ -20,14 +20,14 @@ export function useRole() {
 
   const isAdmin = user.role === 'ADMIN';
   const isSecretaire = user.role === 'SECRETAIRE';
-  const isProfesseur = user.role === 'PROFESSEUR';
+  const isMaitre = user.role === 'MAITRE';
 
   // Si c'est un admin, il a accès à tout
   if (isAdmin) {
     return {
       isAdmin: true,
       isSecretaire: false,
-      isProfesseur: false,
+      isMaitre: false,
       canAccessUsers: true,
       canAccessFinances: true,
       canAccessGrades: true,
@@ -41,12 +41,12 @@ export function useRole() {
   return {
     isAdmin,
     isSecretaire,
-    isProfesseur,
+    isMaitre,
     canAccessUsers: false, // Seul l'admin peut gérer les utilisateurs
     canAccessFinances: isSecretaire, // Secrétaire et admin peuvent accéder aux finances
-    canAccessGrades: isProfesseur, // Professeur et admin peuvent accéder aux notes
+    canAccessGrades: isMaitre, // Maître, maîtresse et admin peuvent accéder aux notes
     canManageStudents: isSecretaire, // Secrétaire et admin peuvent gérer les élèves
     canManageClasses: false, // Seul l'admin peut gérer les classes
-    canManageTeachers: false // Seul l'admin peut gérer les enseignants
+    canManageTeachers: false // Seul l'admin peut gérer le personnel
   };
 }
