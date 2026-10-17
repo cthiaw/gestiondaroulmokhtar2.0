@@ -1,34 +1,8 @@
 import { supabase } from '../lib/supabase';
 import { handleError } from '../utils/errorHandling';
 
-export interface ScaleClass {
-  id: string;
-  level: string;
-  class_type: string;
-  teachers?: {
-    first_name: string;
-    last_name: string;
-    gender?: string | null;
-  } | null;
-}
-
 /** Scale of each subject (subject_id → max_score) */
 export type GradingScales = Record<string, number>;
-
-export async function fetchScaleClasses(): Promise<ScaleClass[]> {
-  try {
-    const { data, error } = await supabase
-      .from('classes')
-      .select('id, level, class_type, teachers (first_name, last_name, gender)')
-      .order('level');
-
-    if (error) throw error;
-    return (data || []) as unknown as ScaleClass[];
-  } catch (error) {
-    handleError('Error fetching classes:', error);
-    return [];
-  }
-}
 
 /**
  * The class a student belongs to in a year, found from their level and class type.

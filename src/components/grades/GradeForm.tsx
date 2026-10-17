@@ -4,7 +4,7 @@ import { fetchSubjects } from '../../services/subjectService';
 import { saveGrade } from '../../services/gradeService';
 import { AbsenceField } from './AbsenceField';
 import { useSchoolYear } from '../../contexts/SchoolYearContext';
-import { findClassId, fetchGradingScales, saveGradingScales, GradingScales } from '../../services/gradingScaleService';
+import { findClassId, fetchGradingScales, saveGradingScales, fetchHighestScores, GradingScales } from '../../services/gradingScaleService';
 
 interface GradeFormProps {
   studentId: string;
@@ -95,6 +95,23 @@ export function GradeForm({ studentId, onSuccess, onCancel, classType, level }: 
       return;
     }
 
+    // A scale typed here becomes the class's scale for the subject
+    const scaleChanged = classId !== null && maxScore !== subjectScale;
+    if (scaleChanged && subjectScale) {
+      try {
+        const highest = await fetchHighestScores(selectedYear.id, level, classType);
+        const highestScore = highest[formData.subject_id];
+        if (highestScore !== undefined && highestScore > maxScore) {
+          setError(`Une note de ${highestScore} a déjà été donnée dans cette matière : le barème ne peut pas être plus petit.`);
+          return;
+        }
+      } catch (checkError) {
+        console.error('Error checking grades:', checkError);
+        setError('Échec de l\'enregistrement : la note n\'a pas été sauvegardée. Réessayez.');
+        return;
+      }
+    }
+
     try {
       const { error: saveError } = await saveGrade({
         student_id: studentId,
@@ -106,8 +123,7 @@ export function GradeForm({ studentId, onSuccess, onCancel, classType, level }: 
       });
       if (saveError) throw saveError;
 
-      // The first grade given in a subject sets the class's scale
-      if (!subjectScale && classId) {
+      if (scaleChanged && classId) {
         try {
           await saveGradingScales(selectedYear.id, classId, { [formData.subject_id]: maxScore });
           setScales({ ...scales, [formData.subject_id]: maxScore });
@@ -191,8 +207,7 @@ export function GradeForm({ studentId, onSuccess, onCancel, classType, level }: 
               step="1"
               value={formData.max_score}
               onChange={(e) => setFormData({ ...formData, max_score: e.target.value })}
-              className="mt-1 block w-full rounded-md border-2 border-black shadow-sm focus:border-brand-500 focus:ring-brand-500 read-only:bg-slate-100"
-              readOnly={!!subjectScale}
+              className="mt-1 block w-full rounded-md border-2 border-black shadow-sm focus:border-brand-500 focus:ring-brand-500"
               required
             />
           </div>
@@ -200,7 +215,7 @@ export function GradeForm({ studentId, onSuccess, onCancel, classType, level }: 
         {formData.subject_id && (
           <p className="text-sm text-slate-500">
             {subjectScale
-              ? `Barème de la classe : sur ${subjectScale}. Il se modifie avec le bouton Barèmes.`
+              ? `Barème de la classe : sur ${subjectScale}. Le changer ici le change pour toute la classe.`
               : 'Pas encore de barème pour cette matière dans la classe : celui saisi ici deviendra le barème de la classe.'}
           </p>
         )}

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Scale } from 'lucide-react';
 import { useStudents } from '../hooks/useStudents';
 import { useSchoolYear } from '../contexts/SchoolYearContext';
 import { AbsenceField } from '../components/grades/AbsenceField';
@@ -7,7 +6,6 @@ import { Modal } from '../components/modals/Modal';
 import { GradeForm } from '../components/grades/GradeForm';
 import { GradesList } from '../components/grades/GradesList';
 import { ReportCard } from '../components/grades/ReportCard';
-import { GradingScaleEditor } from '../components/grades/GradingScaleEditor';
 import { useModal } from '../hooks/useModal';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import { CLASS_LEVELS } from '../constants/classLevels';
@@ -26,7 +24,6 @@ export function Grades() {
   const [reportCardData, setReportCardData] = useState<ReportCardData | null>(null);
   const gradeModal = useModal();
   const reportCardModal = useModal();
-  const scaleModal = useModal();
 
   const getLevelLabel = (value: string) => {
     return CLASS_LEVELS.find(level => level.value === value)?.label || value;
@@ -131,13 +128,7 @@ export function Grades() {
 
   return (
     <div>
-      <div className="page-header">
-        <h1 className="page-title">Gestion des Notes · {selectedYear?.label}</h1>
-        <button onClick={scaleModal.openModal} className="btn-primary">
-          <Scale className="h-5 w-5" />
-          Barèmes
-        </button>
-      </div>
+      <h1 className="page-title mb-6">Gestion des Notes · {selectedYear?.label}</h1>
 
       <div className="space-y-8">
         {renderStudentsTable(frenchStudents, "Classes Françaises")}
@@ -211,15 +202,6 @@ export function Grades() {
             </div>
           </div>
         )}
-      </Modal>
-
-      <Modal
-        isOpen={scaleModal.isOpen}
-        onClose={scaleModal.closeModal}
-        title="Barèmes des matières par classe"
-        size="lg"
-      >
-        <GradingScaleEditor onClose={scaleModal.closeModal} readOnly={readOnly} />
       </Modal>
 
       <Modal
