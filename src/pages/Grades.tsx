@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useStudents } from '../hooks/useStudents';
 import { useSchoolYear } from '../contexts/SchoolYearContext';
-import { SchoolYearSelect } from '../components/ui/SchoolYearSelect';
 import { AbsenceField } from '../components/grades/AbsenceField';
 import { Modal } from '../components/modals/Modal';
 import { GradeForm } from '../components/grades/GradeForm';
@@ -129,10 +128,7 @@ export function Grades() {
 
   return (
     <div>
-      <div className="page-header">
-        <h1 className="page-title">Gestion des Notes · {selectedYear?.label}</h1>
-        <SchoolYearSelect />
-      </div>
+      <h1 className="page-title mb-6">Gestion des Notes · {selectedYear?.label}</h1>
 
       <div className="space-y-8">
         {renderStudentsTable(frenchStudents, "Classes Françaises")}

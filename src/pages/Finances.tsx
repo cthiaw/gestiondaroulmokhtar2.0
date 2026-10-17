@@ -20,7 +20,6 @@ import { PaymentList } from '../components/finance/PaymentList';
 import { ExpenseList } from '../components/finance/ExpenseList';
 import { FinanceSummary } from '../components/finance/FinanceSummary';
 import { useSchoolYear } from '../contexts/SchoolYearContext';
-import { SchoolYearSelect } from '../components/ui/SchoolYearSelect';
 
 export function Finances() {
   const [payments, setPayments] = useState<Payment[]>([]);
@@ -104,10 +103,7 @@ export function Finances() {
 
   return (
     <div>
-      <div className="page-header">
-        <h1 className="page-title">Gestion Financière · {selectedYear?.label}</h1>
-        <SchoolYearSelect />
-      </div>
+      <h1 className="page-title mb-6">Gestion Financière · {selectedYear?.label}</h1>
 
       <FinanceSummary payments={payments} expenses={expenses} />
 
