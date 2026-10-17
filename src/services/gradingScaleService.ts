@@ -97,3 +97,37 @@ export async function saveGradingScales(
     if (error) throw error;
   }
 }
+
+/**
+ * Highest grade given in each subject (subject_id → score) to the students of a
+ * class in a year, so a scale is never set below a grade already given.
+ */
+export async function fetchHighestScores(
+  schoolYearId: string,
+  level: string,
+  classType: string
+): Promise<Record<string, number>> {
+  const { data: enrollments, error: enrollmentError } = await supabase
+    .from('enrollments')
+    .select('student_id')
+    .eq('school_year_id', schoolYearId)
+    .eq('level', level)
+    .eq('class_type', classType);
+  if (enrollmentError) throw enrollmentError;
+
+  const studentIds = (enrollments || []).map((row) => row.student_id);
+  if (studentIds.length === 0) return {};
+
+  const { data: grades, error } = await supabase
+    .from('grades')
+    .select('subject_id, score')
+    .eq('school_year_id', schoolYearId)
+    .in('student_id', studentIds);
+  if (error) throw error;
+
+  const highest: Record<string, number> = {};
+  for (const grade of grades || []) {
+    highest[grade.subject_id] = Math.max(highest[grade.subject_id] ?? 0, Number(grade.score));
+  }
+  return highest;
+}

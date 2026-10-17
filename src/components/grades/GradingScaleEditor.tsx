@@ -4,6 +4,7 @@ import {
   fetchScaleClasses,
   fetchGradingScales,
   saveGradingScales,
+  fetchHighestScores,
   ScaleClass
 } from '../../services/gradingScaleService';
 import { useSchoolYear } from '../../contexts/SchoolYearContext';
@@ -88,6 +89,15 @@ export function GradingScaleEditor({ onClose, readOnly = false }: GradingScaleEd
 
     try {
       setSaving(true);
+      const highest = await fetchHighestScores(yearId, selectedClass.level, selectedClass.class_type);
+      const tooLow = subjects.find((subject) => {
+        const maxScore = scales[subject.id];
+        return maxScore !== null && highest[subject.id] !== undefined && highest[subject.id] > maxScore;
+      });
+      if (tooLow) {
+        setError(`Une note de ${highest[tooLow.id]} a déjà été donnée en « ${tooLow.name.trim()} » : le barème ne peut pas être plus petit.`);
+        return;
+      }
       await saveGradingScales(yearId, selectedClass.id, scales);
       setSaved(true);
     } catch (err) {
