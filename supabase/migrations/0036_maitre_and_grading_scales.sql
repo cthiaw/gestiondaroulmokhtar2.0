@@ -32,6 +32,8 @@ ALTER TABLE teachers DROP CONSTRAINT IF EXISTS teachers_gender_check;
 ALTER TABLE teachers ADD CONSTRAINT teachers_gender_check
   CHECK (gender IS NULL OR gender IN ('M', 'F'));
 
+-- The constraint is named staff_type_check in production
+ALTER TABLE teachers DROP CONSTRAINT IF EXISTS staff_type_check;
 ALTER TABLE teachers DROP CONSTRAINT IF EXISTS teachers_staff_type_check;
 UPDATE teachers SET staff_type = 'MAITRE' WHERE staff_type = 'PROFESSEUR';
 ALTER TABLE teachers ADD CONSTRAINT teachers_staff_type_check
